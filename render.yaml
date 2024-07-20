@@ -1,0 +1,22 @@
+databases:
+  - name: taskmanagerdb
+    plan: free
+    databaseName: taskmanager
+    user: sergey
+
+services:
+  - type: web
+    plan: free
+    name: task-manager
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "poetry run gunicorn taskmanager.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: taskmanagerdb
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
