@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{% block title %}{% endblock %}</title>
+    {# Load the tag library #}
+    {% load django_bootstrap5 %}
+    {% load i18n %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>
 <body>
-
+    {% include "navbar.html" %}
+    {% bootstrap_messages %}
+    {% block content %}{% endblock %}
+    {% include "footer.html" %}
 </body>
 </html>
