@@ -36,10 +36,6 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
 ]
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
 
 # Application definition
 
@@ -52,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'task_manager',
     'django_bootstrap5',
+    'task_manager.users',
 ]
 
 MIDDLEWARE = [

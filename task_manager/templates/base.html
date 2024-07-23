@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
     {# Load the tag library #}
     {% load django_bootstrap5 %}
     {% load i18n %}
@@ -10,8 +9,9 @@
     {# Load CSS and JavaScript #}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <title>{% block title %}{% trans 'Task manager Hexlet' %}{% endblock %}</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     {% include "navbar.html" %}
     {% bootstrap_messages %}
     {% block content %}{% endblock %}
