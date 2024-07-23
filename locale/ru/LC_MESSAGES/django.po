@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-22 14:44+0300\n"
+"POT-Creation-Date: 2024-07-23 14:04+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,18 +19,40 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: task_manager/templates/base.html:12
+msgid "Task manager Hexlet"
+msgstr "Менеджер задач Hexlet"
+
 #: task_manager/templates/navbar.html:7
 msgid "Task Manager"
 msgstr "Менеджер задач"
 
 #: task_manager/templates/navbar.html:17
+#: task_manager/templates/users/index.html:6
 msgid "Users"
 msgstr "Пользователи"
 
-#: task_manager/templates/navbar.html:20
-msgid "Link"
-msgstr ""
+#: task_manager/templates/users/index.html:10
+msgid "ID"
+msgstr "ID"
 
-#: task_manager/template/base.html:5
-msgid "Task manager Hexlet"
-msgstr "Менеджер задач Hexlet"
+#: task_manager/templates/users/index.html:11
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: task_manager/templates/users/index.html:12
+msgid "Full name"
+msgstr "Полное имя"
+
+#: task_manager/templates/users/index.html:13
+msgid "Creation date"
+msgstr "Дата создания"
+
+#: task_manager/templates/users/index.html:26
+msgid "Edit"
+msgstr "Изменить"
+
+#: task_manager/templates/users/index.html:29
+msgid "Delete"
+msgstr "Удалить"
