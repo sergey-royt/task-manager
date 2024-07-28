@@ -20,3 +20,7 @@ jobs:
           make install
       - name: Run linter
         run: make lint
+      - name: Run tests
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          run: make test
