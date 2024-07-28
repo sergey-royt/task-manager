@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-23 14:04+0300\n"
+"POT-Creation-Date: 2024-07-27 15:30+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Task manager Hexlet"
 msgstr "Менеджер задач Hexlet"
 
-#: task_manager/templates/navbar.html:7
+#: task_manager/templates/login.html:7 task_manager/templates/navbar.html:7
 msgid "Task Manager"
 msgstr "Менеджер задач"
 
@@ -32,6 +32,22 @@ msgstr "Менеджер задач"
 #: task_manager/templates/users/index.html:6
 msgid "Users"
 msgstr "Пользователи"
+
+#: task_manager/templates/navbar.html:22
+msgid "Statuses"
+msgstr "Статусы"
+
+#: task_manager/templates/navbar.html:26
+msgid "Logout"
+msgstr "Выход"
+
+#: task_manager/templates/navbar.html:31 task_manager/views.py:17
+msgid "Authorization"
+msgstr "Вход"
+
+#: task_manager/templates/navbar.html:35
+msgid "Registration"
+msgstr "Регистрация"
 
 #: task_manager/templates/users/index.html:10
 msgid "ID"
@@ -56,3 +72,11 @@ msgstr "Изменить"
 #: task_manager/templates/users/index.html:29
 msgid "Delete"
 msgstr "Удалить"
+
+#: task_manager/views.py:18
+msgid "Login"
+msgstr "Войти"
+
+#: task_manager/views.py:19
+msgid "You are Logged in"
+msgstr "Вы залогинены"

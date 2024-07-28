@@ -16,6 +16,7 @@ whitenoise = {extras = ["brotli"], version = "^6.7.0"}
 gunicorn = "^22.0.0"
 uvicorn = "^0.30.3"
 django-bootstrap5 = "^24.2"
+faker = "^26.0.0"
 
 
 [build-system]
