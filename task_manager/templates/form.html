@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block title %}
+    {{ title }} | {% trans 'Task Manager' %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="my-4 text-left">{{ title }}</h1>
+    <form class="text-left" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% bootstrap_button  button_text button_type="submit" button_class="btn btn-primary" %}
+    </form>
+{% endblock %}

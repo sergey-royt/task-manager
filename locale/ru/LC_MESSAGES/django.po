@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-23 14:04+0300\n"
+"POT-Creation-Date: 2024-07-28 12:42+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,35 +24,71 @@ msgstr ""
 msgid "Task manager Hexlet"
 msgstr "Менеджер задач Hexlet"
 
-#: task_manager/templates/navbar.html:7
+#: task_manager/templates/form.html:7 task_manager/templates/navbar.html:7
 msgid "Task Manager"
 msgstr "Менеджер задач"
 
 #: task_manager/templates/navbar.html:17
-#: task_manager/templates/users/index.html:6
+#: task_manager/templates/users/index.html:7
 msgid "Users"
 msgstr "Пользователи"
 
-#: task_manager/templates/users/index.html:10
+#: task_manager/templates/navbar.html:22
+msgid "Statuses"
+msgstr "Статусы"
+
+#: task_manager/templates/navbar.html:26
+msgid "Labels"
+msgstr "Метки"
+
+#: task_manager/templates/navbar.html:30
+msgid "Tasks"
+msgstr "Задачи"
+
+#: task_manager/templates/navbar.html:35
+msgid "Logout"
+msgstr "Выход"
+
+#: task_manager/templates/navbar.html:41 task_manager/views.py:18
+msgid "Authorization"
+msgstr "Вход"
+
+#: task_manager/templates/navbar.html:45
+msgid "Registration"
+msgstr "Регистрация"
+
+#: task_manager/templates/users/index.html:11
 msgid "ID"
 msgstr "ID"
 
-#: task_manager/templates/users/index.html:11
+#: task_manager/templates/users/index.html:12
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: task_manager/templates/users/index.html:12
+#: task_manager/templates/users/index.html:13
 msgid "Full name"
 msgstr "Полное имя"
 
-#: task_manager/templates/users/index.html:13
+#: task_manager/templates/users/index.html:14
 msgid "Creation date"
 msgstr "Дата создания"
 
-#: task_manager/templates/users/index.html:26
+#: task_manager/templates/users/index.html:27
 msgid "Edit"
 msgstr "Изменить"
 
-#: task_manager/templates/users/index.html:29
+#: task_manager/templates/users/index.html:30
 msgid "Delete"
 msgstr "Удалить"
+
+#: task_manager/views.py:19
+msgid "Login"
+msgstr "Войти"
+
+#: task_manager/views.py:21
+msgid "You are Logged in"
+msgstr "Вы залогинены"
+
+#: task_manager/views.py:27
+msgid "You are logged out"
+msgstr "Вы разлогинены"
