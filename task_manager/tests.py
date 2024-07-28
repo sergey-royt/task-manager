@@ -6,6 +6,7 @@ from http import HTTPStatus
 
 User = get_user_model()
 
+
 class IndexTest(TestCase):
     def setUp(self):
         self.client = Client()
@@ -32,16 +33,19 @@ class IndexTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def _test_login_correct(self):
-        response = self.client.post(reverse('login'), data={'username': self.username,
-                                                            'password': self.password})
+        response = self.client.post(reverse('login'),
+                                    data={'username': self.username,
+                                          'password': self.password})
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def _test_login_incorrect(self):
-        response = self.client.post(reverse('login'), data={'username': 'username',
-                                                            'password': self.password})
+        response = self.client.post(reverse('login'),
+                                    data={'username': 'username',
+                                          'password': self.password})
         self.assertFalse(response.status_code == HTTPStatus.FOUND)
 
     def _test_password_incorrect(self):
-        response = self.client.post(reverse('login'), data={'username': self.username,
-                                                            'password': 'password'})
+        response = self.client.post(reverse('login'),
+                                    data={'username': self.username,
+                                          'password': 'password'})
         self.assertFalse(response.status_code == HTTPStatus.FOUND)

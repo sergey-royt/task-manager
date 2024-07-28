@@ -17,6 +17,7 @@ gunicorn = "^22.0.0"
 uvicorn = "^0.30.3"
 django-bootstrap5 = "^24.2"
 faker = "^26.0.0"
+flake8 = "^7.1.0"
 
 
 [build-system]

@@ -20,6 +20,7 @@ class UserLoginView(SuccessMessageMixin, LoginView):
 
     success_message = _('You are Logged in')
 
+
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy('index')
 
