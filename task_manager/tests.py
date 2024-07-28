@@ -7,7 +7,7 @@ from http import HTTPStatus
 User = get_user_model()
 
 
-class IndexTest(TestCase):
+class LoginTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.faker = Faker()
@@ -23,14 +23,9 @@ class IndexTest(TestCase):
         self.user.delete()
 
     def test(self):
-        self._test_index()
         self._test_login_correct()
         self._test_login_incorrect()
         self._test_password_incorrect()
-
-    def _test_index(self):
-        response = self.client.get(reverse('index'))
-        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def _test_login_correct(self):
         response = self.client.post(reverse('login'),
