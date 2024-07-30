@@ -9,6 +9,9 @@ from django.contrib import messages
 
 class IndexView(TemplateView):
     template_name = 'index.html'
+    extra_context = {'title': _('Greetings from Hexlet!'),
+                     'text': _('Practical programming courses'),
+                     'button_text': _('Learn more')}
 
 
 class UserLoginView(SuccessMessageMixin, LoginView):

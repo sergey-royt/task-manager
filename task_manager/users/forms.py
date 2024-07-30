@@ -8,6 +8,7 @@ MIN_USERNAME_LENGTH = 5
 MAX_USERNAME_LENGTH = 20
 MAX_NAME_LENGTH = 30
 
+
 class UserForm(UserCreationForm):
     username = forms.CharField(
         min_length=MIN_USERNAME_LENGTH,
