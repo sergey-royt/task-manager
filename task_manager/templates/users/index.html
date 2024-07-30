@@ -23,7 +23,7 @@
 	        <td>{{ user.first_name}} {{ user.last_name}}</td>
 	        <td>{{ user.date_joined }}</td>
 	        <td>
-			    <a href="#">
+			    <a href="{% url 'users_update' user.id %}">
 			    {% trans 'Edit' %}</a>
                 <br>
 			    <a href="#">

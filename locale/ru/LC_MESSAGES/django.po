@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-28 12:42+0300\n"
+"POT-Creation-Date: 2024-07-30 16:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,10 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: task_manager/mixins.py:9
+msgid "You aren't authorised! Please log in."
+msgstr "Вы не авторизованы! Пожалуйста, выполните вход."
 
 #: task_manager/templates/base.html:12
 msgid "Task manager Hexlet"
@@ -53,7 +57,7 @@ msgstr "Выход"
 msgid "Authorization"
 msgstr "Вход"
 
-#: task_manager/templates/navbar.html:45
+#: task_manager/templates/navbar.html:45 task_manager/users/views.py:23
 msgid "Registration"
 msgstr "Регистрация"
 
@@ -61,7 +65,8 @@ msgstr "Регистрация"
 msgid "ID"
 msgstr "ID"
 
-#: task_manager/templates/users/index.html:12
+#: task_manager/templates/users/index.html:12 task_manager/users/forms.py:16
+#: task_manager/users/forms.py:35
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -81,6 +86,46 @@ msgstr "Изменить"
 msgid "Delete"
 msgstr "Удалить"
 
+#: task_manager/users/forms.py:15
+msgid "Not shorter than 5 chars. Not longer than 20 chars."
+msgstr "Не короче 5 символов и не более 20."
+
+#: task_manager/users/forms.py:21 task_manager/users/forms.py:27
+msgid "Not longer than 30 chars."
+msgstr "Не длиннее 30 символов."
+
+#: task_manager/users/forms.py:22 task_manager/users/forms.py:36
+msgid "First name"
+msgstr "Имя"
+
+#: task_manager/users/forms.py:28 task_manager/users/forms.py:37
+msgid "Last name"
+msgstr "Фамилия"
+
+#: task_manager/users/views.py:21
+msgid "User successfully created"
+msgstr "Пользователь успешно зарегистрирован"
+
+#: task_manager/users/views.py:24
+msgid "Register"
+msgstr "Зарегистрировать"
+
+#: task_manager/users/views.py:32
+msgid "User successfully updated"
+msgstr "Пользователь успешно изменен"
+
+#: task_manager/users/views.py:34
+msgid "Updating users"
+msgstr "Изменение пользователя"
+
+#: task_manager/users/views.py:35
+msgid "Update"
+msgstr "Изменить"
+
+#: task_manager/users/views.py:38
+msgid "You don't have rights to update other users."
+msgstr "У вас нет прав для изменения другого пользователя."
+
 #: task_manager/views.py:19
 msgid "Login"
 msgstr "Войти"
@@ -89,6 +134,6 @@ msgstr "Войти"
 msgid "You are Logged in"
 msgstr "Вы залогинены"
 
-#: task_manager/views.py:27
+#: task_manager/views.py:28
 msgid "You are logged out"
 msgstr "Вы разлогинены"

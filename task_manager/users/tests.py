@@ -67,29 +67,29 @@ class UserUpdateTest(TestCase):
 
     def _test_update_user_allowed_get(self):
         response = self.client.get(
-            reverse('user_update', kwargs={'id': self.authorized_user.id})
+            reverse('users_update', kwargs={'pk': self.authorized_user.id})
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def _test_update_user_restricted_get(self):
         response = self.client.get(
-            reverse('user_update', kwargs={'id': self.unauthorized_user.id})
+            reverse('users_update', kwargs={'pk': self.unauthorized_user.id})
         )
 
         self.assertFalse(response.status_code == HTTPStatus.OK)
 
     def _test_update_user_allowed_post(self):
         response = self.client.post(
-            reverse('user_update', kwargs={'id': self.authorized_user.id}),
+            reverse('users_update', kwargs={'pk': self.authorized_user.id}),
             data=self.new_user_data
         )
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(self.authorized_user.username, self.new_username)
 
     def _test_update_user_restricted_post(self):
         response = self.client.post(
-            reverse('user_update', kwargs={'id': self.unauthorized_user.id}),
+            reverse('users_update', kwargs={'pk': self.unauthorized_user.id}),
             data=self.new_user_data
         )
         self.assertFalse(response.status_code == HTTPStatus.FOUND)
