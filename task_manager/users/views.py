@@ -1,8 +1,8 @@
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.contrib.auth.models import User
+from .models import CustomUser
 from django.contrib.messages.views import SuccessMessageMixin
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from .forms import UserForm
 from django.urls import reverse_lazy
 from task_manager.mixins import AuthRequiredMixin, UserPermissionMixin
@@ -10,7 +10,7 @@ from task_manager.mixins import AuthRequiredMixin, UserPermissionMixin
 
 # Create your views here.
 class UserIndexView(ListView):
-    model = User
+    model = CustomUser
     template_name = 'users/index.html'
     context_object_name = 'users'
     ordering = ['pk']
@@ -27,7 +27,7 @@ class UserCreateView(SuccessMessageMixin, CreateView):
 
 class UserUpdateView(AuthRequiredMixin, UserPermissionMixin, SuccessMessageMixin, UpdateView):
     login_url = reverse_lazy('login')
-    model = User
+    model = CustomUser
     form_class = UserForm
     template_name = 'form.html'
     success_message = _('User successfully updated')

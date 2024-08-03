@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from faker import Faker
 from http import HTTPStatus
-from django.contrib.auth.models import User
+from .models import CustomUser
 
 
 class UsersTest(TestCase):
