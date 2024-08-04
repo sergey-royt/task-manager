@@ -25,7 +25,11 @@ class UserCreateView(SuccessMessageMixin, CreateView):
                      'button_text': _('Register')}
 
 
-class UserUpdateView(AuthRequiredMixin, UserPermissionMixin, SuccessMessageMixin, UpdateView):
+class UserUpdateView(AuthRequiredMixin,
+                     UserPermissionMixin,
+                     SuccessMessageMixin,
+                     UpdateView):
+
     login_url = reverse_lazy('login')
     model = CustomUser
     form_class = UserUpdateForm
@@ -36,4 +40,6 @@ class UserUpdateView(AuthRequiredMixin, UserPermissionMixin, SuccessMessageMixin
                      'button_text': _('Update')}
 
     permission_denied_url = reverse_lazy('users_index')
-    permission_denied_message = _("You don't have rights to update other users.")
+    permission_denied_message = _(
+        "You don't have rights to update other users."
+    )

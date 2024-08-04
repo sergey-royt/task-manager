@@ -53,14 +53,18 @@ class UserUpdateTest(TestCase):
         first_name_2 = faker.first_name()
         last_name_2 = faker.last_name()
         password_2 = faker.password(length=10)
-        self.authorized_user = User.objects.create_user(username=username_1,
-                                                        password=password_1,
-                                                        first_name=first_name_1,
-                                                        last_name=last_name_1)
-        self.unauthorized_user = User.objects.create_user(username=username_2,
-                                                          password=password_2,
-                                                          first_name=first_name_2,
-                                                          last_name=last_name_2)
+        self.authorized_user = User.objects.create_user(
+            username=username_1,
+            password=password_1,
+            first_name=first_name_1,
+            last_name=last_name_1)
+
+        self.unauthorized_user = User.objects.create_user(
+            username=username_2,
+            password=password_2,
+            first_name=first_name_2,
+            last_name=last_name_2)
+
         self.authorized_user.save()
         self.unauthorized_user.save()
 
