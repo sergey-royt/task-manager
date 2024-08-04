@@ -3,6 +3,7 @@ from django.urls import reverse
 from faker import Faker
 from http import HTTPStatus
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 
 User = get_user_model()
 
@@ -120,3 +121,55 @@ class UserUpdateTest(TestCase):
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertFalse(self.unauthorized_user.username == self.new_username)
+
+
+class UserDeleteTest(TestCase):
+    def setUp(self):
+        faker = Faker()
+        self.client = Client()
+        self.user_1 = User.objects.create_user(
+            username=faker.user_name(),
+            first_name=faker.first_name(),
+            last_name=faker.last_name(),
+            password=faker.password(length=10)
+            )
+
+        self.user_2 = User.objects.create_user(
+            username=faker.user_name(),
+            first_name=faker.first_name(),
+            last_name=faker.last_name(),
+            password=faker.password(length=10)
+            )
+        self.user_1.save()
+        self.user_2.save()
+        self.count = User.objects.count()
+
+    def tearDown(self):
+        self.user_1.delete()
+        self.user_2.delete()
+
+    def test(self):
+        self._test_delete_self()
+        self._test_delete_other()
+
+    def _test_delete_self(self):
+        pk = self.user_1.pk
+        self.client.force_login(self.user_1)
+        response = self.client.post(
+            reverse('users_delete', kwargs={'pk': pk}),
+        )
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('users'))
+        self.assertEqual(User.objects.count(), self.count - 1)
+        with self.assertRaises(ObjectDoesNotExist):
+            User.objects.get(pk=pk)
+
+    def _test_delete_other(self):
+        other_pk = self.user_2.pk
+        self.client.force_login(self.user_1)
+        response = self.client.post(
+            reverse('users_delete', kwargs={'pk': other_pk}),
+        )
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('users'))
+        self.assertEqual(User.objects.count(), self.count)
