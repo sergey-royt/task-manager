@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 NAME_MAX_LENGTH = 30
 MIN_PASSWORD_LENGTH = 8
 
+
 class CustomUser(AbstractUser):
     first_name = models.CharField(_("first name"), max_length=NAME_MAX_LENGTH)
     last_name = models.CharField(_("last name"), max_length=NAME_MAX_LENGTH)

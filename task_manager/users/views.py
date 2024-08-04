@@ -3,7 +3,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from .models import CustomUser
 from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.translation import gettext_lazy as _
-from .forms import UserForm
+from .forms import UserCreateForm, UserUpdateForm
 from django.urls import reverse_lazy
 from task_manager.mixins import AuthRequiredMixin, UserPermissionMixin
 
@@ -17,7 +17,7 @@ class UserIndexView(ListView):
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
-    form_class = UserForm
+    form_class = UserCreateForm
     template_name = 'form.html'
     success_message = _('User successfully created')
     success_url = reverse_lazy('login')
@@ -28,7 +28,7 @@ class UserCreateView(SuccessMessageMixin, CreateView):
 class UserUpdateView(AuthRequiredMixin, UserPermissionMixin, SuccessMessageMixin, UpdateView):
     login_url = reverse_lazy('login')
     model = CustomUser
-    form_class = UserForm
+    form_class = UserUpdateForm
     template_name = 'form.html'
     success_message = _('User successfully updated')
     success_url = reverse_lazy('users_index')
