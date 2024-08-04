@@ -30,15 +30,15 @@ class UsersCreateTest(TestCase):
         password = faker.password(length=10)
         first_name = faker.first_name()
         last_name = faker.last_name()
-        self.client.post(reverse('users_create'),
-                         data={'username': username,
-                               'first_name': first_name,
-                               'last_name': last_name,
-                               'password1': password,
-                               'password2': password})
+        response = self.client.post(reverse('users_create'),
+                                    data={'username': username,
+                                          'first_name': first_name,
+                                          'last_name': last_name,
+                                          'password1': password,
+                                          'password2': password})
         user = User.objects.last()
         self.assertEqual(user.username, username)
-        user.delete()
+        self.assertRedirects(response, reverse('login'))
 
 
 class UserUpdateTest(TestCase):
@@ -81,10 +81,6 @@ class UserUpdateTest(TestCase):
                               'password1': self.new_password,
                               'password2': self.new_password}
 
-    def tearDown(self):
-        self.authorized_user.delete()
-        self.unauthorized_user.delete()
-
     def test(self):
         self._test_update_user_allowed_get()
         self._test_update_user_restricted_get()
@@ -113,6 +109,7 @@ class UserUpdateTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.authorized_user.refresh_from_db()
         self.assertEqual(self.authorized_user.username, self.new_username)
+        self.assertRedirects(response, reverse('users_index'))
 
     def _test_update_user_restricted_post(self):
         response = self.client.post(
@@ -144,13 +141,9 @@ class UserDeleteTest(TestCase):
         self.user_2.save()
         self.count = User.objects.count()
 
-    def tearDown(self):
-        self.user_1.delete()
-        self.user_2.delete()
-
     def test(self):
-        self._test_delete_self()
         self._test_delete_other()
+        self._test_delete_self()
 
     def _test_delete_self(self):
         pk = self.user_1.pk
@@ -159,7 +152,7 @@ class UserDeleteTest(TestCase):
             reverse('users_delete', kwargs={'pk': pk}),
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('users'))
+        self.assertRedirects(response, reverse('users_index'))
         self.assertEqual(User.objects.count(), self.count - 1)
         with self.assertRaises(ObjectDoesNotExist):
             User.objects.get(pk=pk)
@@ -171,5 +164,5 @@ class UserDeleteTest(TestCase):
             reverse('users_delete', kwargs={'pk': other_pk}),
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('users'))
+        self.assertRedirects(response, reverse('users_index'))
         self.assertEqual(User.objects.count(), self.count)

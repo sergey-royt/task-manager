@@ -26,7 +26,7 @@
 			    <a href="{% url 'users_update' user.id %}">
 			    {% trans 'Edit' %}</a>
                 <br>
-			    <a href="#">
+			    <a href="{% url 'users_delete' user.id %}">
 			    {% trans 'Delete' %}</a>
 	        </td>
 	    </tr>

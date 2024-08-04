@@ -1,16 +1,19 @@
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView
-from .models import CustomUser
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.translation import gettext_lazy as _
 from .forms import UserCreateForm, UserUpdateForm
 from django.urls import reverse_lazy
 from task_manager.mixins import AuthRequiredMixin, UserPermissionMixin
+from django.contrib.auth import get_user_model
 
 
 # Create your views here.
+User = get_user_model()
+
+
 class UserIndexView(ListView):
-    model = CustomUser
+    model = User
     template_name = 'users/index.html'
     context_object_name = 'users'
     ordering = ['pk']
@@ -31,7 +34,7 @@ class UserUpdateView(AuthRequiredMixin,
                      UpdateView):
 
     login_url = reverse_lazy('login')
-    model = CustomUser
+    model = User
     form_class = UserUpdateForm
     template_name = 'form.html'
     success_message = _('User successfully updated')
@@ -42,4 +45,24 @@ class UserUpdateView(AuthRequiredMixin,
     permission_denied_url = reverse_lazy('users_index')
     permission_denied_message = _(
         "You don't have rights to update other users."
+    )
+
+
+class UserDeleteView(AuthRequiredMixin,
+                     UserPermissionMixin,
+                     SuccessMessageMixin,
+                     DeleteView):
+
+    login_url = reverse_lazy('login')
+    success_message = _('User successfully deleted')
+    success_url = reverse_lazy('users_index')
+    template_name = 'users/delete.html'
+    model = User
+    extra_context = {'title': _('Deleting user'),
+                     'text': _('Are you sure you want to delete'),
+                     'button_text': _('Yes, delete')}
+
+    permission_denied_url = reverse_lazy('users_index')
+    permission_denied_message = _(
+        "You don't have rights to delete other users."
     )

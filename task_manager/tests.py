@@ -23,9 +23,6 @@ class LoginTest(TestCase):
         )
         self.user.save()
 
-    def tearDown(self):
-        self.user.delete()
-
     def test(self):
         self._test_login_correct()
         self._test_login_incorrect()
@@ -36,6 +33,7 @@ class LoginTest(TestCase):
                                     data={'username': self.username,
                                           'password': self.password})
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('index'))
 
     def _test_login_incorrect(self):
         response = self.client.post(reverse('login'),
