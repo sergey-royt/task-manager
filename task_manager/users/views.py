@@ -42,11 +42,6 @@ class UserUpdateView(AuthRequiredMixin,
     extra_context = {'title': _('Updating users'),
                      'button_text': _('Update')}
 
-    permission_denied_url = reverse_lazy('users_index')
-    permission_denied_message = _(
-        "You don't have rights to update other users."
-    )
-
 
 class UserDeleteView(AuthRequiredMixin,
                      UserPermissionMixin,

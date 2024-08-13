@@ -1,0 +1,16 @@
+{
+  "create": {
+    "valid": {
+      "name": "Paused"
+    },
+    "missing_fields": {
+      "name": ""
+    },
+    "exists": {
+      "name": "New"
+    }
+  },
+  "update": {
+    "name": "Archived"
+  }
+}
