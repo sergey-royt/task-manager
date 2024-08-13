@@ -39,7 +39,7 @@ class UserUpdateView(AuthRequiredMixin,
     template_name = 'form.html'
     success_message = _('User successfully updated')
     success_url = reverse_lazy('users_index')
-    extra_context = {'title': _('Updating users'),
+    extra_context = {'title': _('Updating user'),
                      'button_text': _('Update')}
 
 
