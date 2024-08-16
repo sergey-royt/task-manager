@@ -33,6 +33,7 @@ class UserUpdateView(AuthRequiredMixin,
                      SuccessMessageMixin,
                      UpdateView):
 
+    permission_denied_url = reverse_lazy('users_index')
     login_url = reverse_lazy('login')
     model = User
     form_class = UserUpdateForm

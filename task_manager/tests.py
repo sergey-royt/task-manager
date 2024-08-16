@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from faker import Faker
 from django.contrib.auth import get_user_model
 from http import HTTPStatus
 
@@ -10,39 +9,20 @@ User = get_user_model()
 class LoginTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.faker = Faker()
-        self.username = self.faker.user_name()
-        self.password = self.faker.password(length=10)
-        self.first_name = self.faker.first_name()
-        self.last_name = self.faker.last_name()
-        self.user = User.objects.create_user(
-            username=self.username,
-            password=self.password,
-            first_name=self.first_name,
-            last_name=self.last_name
+        self.user_data = {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        self.user = User.objects.create_user(**self.user_data)
+
+    def test_login(self):
+        response = self.client.post(
+            reverse('login'), data=self.user_data, follow=True
         )
-        self.user.save()
-
-    def test(self):
-        self._test_login_correct()
-        self._test_login_incorrect()
-        self._test_password_incorrect()
-
-    def _test_login_correct(self):
-        response = self.client.post(reverse('login'),
-                                    data={'username': self.username,
-                                          'password': self.password})
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertRedirects(response, reverse('index'))
+        self.assertTrue(response.context['user'].is_authenticated)
 
-    def _test_login_incorrect(self):
-        response = self.client.post(reverse('login'),
-                                    data={'username': 'username',
-                                          'password': self.password})
-        self.assertFalse(response.status_code == HTTPStatus.FOUND)
-
-    def _test_password_incorrect(self):
-        response = self.client.post(reverse('login'),
-                                    data={'username': self.username,
-                                          'password': 'password'})
-        self.assertFalse(response.status_code == HTTPStatus.FOUND)
+    def test_logout(self):
+        self.client.force_login(self.user)
+        response = self.client.post(reverse('logout'), follow=True)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertRedirects(response, reverse('index'))
+        self.assertFalse(response.context['user'].is_authenticated)

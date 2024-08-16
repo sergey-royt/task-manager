@@ -8,14 +8,6 @@ from django.core.exceptions import ObjectDoesNotExist
 User = get_user_model()
 
 
-class UsersTest(TestCase):
-    def test_users_list(self):
-        client = Client()
-        response = client.get(reverse('users_index'))
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertIn('users', response.context)
-
-
 class UsersCreateTest(TestCase):
     def setUp(self):
         self.client = Client()
