@@ -6,10 +6,10 @@ class Status(models.Model):
     name = models.CharField(max_length=150,
                             unique=True,
                             blank=False,
-                            verbose_name='Name')
+                            verbose_name=_('Name'))
     created_at = models.DateTimeField(
         auto_now_add=True,
-        verbose_name='Date of creation'
+        verbose_name=_('Date of creation')
     )
 
     def __str__(self):
