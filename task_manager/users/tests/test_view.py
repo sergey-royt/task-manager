@@ -12,7 +12,7 @@ class TestUserListView(UserTestCase):
 
     def test_content(self):
         response = self.client.get(reverse('users_index'))
-        self.assertEqual(len(response.context['users']), self.count)
+        self.assertEqual(response.context['users'].count(), self.count)
         self.assertQuerysetEqual(
             response.context['users'],
             self.users,

@@ -17,7 +17,7 @@ class TestStatusListView(StatusTestCase):
 
     def test_content(self):
         response = self.client.get(reverse('status_index'))
-        self.assertEqual(len(response.context['statuses']), self.count)
+        self.assertEqual(response.context['statuses'].count(), self.count)
         self.assertQuerysetEqual(
             response.context['statuses'],
             self.statuses,

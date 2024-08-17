@@ -9,7 +9,6 @@ from task_manager.mixins import AuthRequiredMixin
 
 
 class StatusIndexView(AuthRequiredMixin, ListView):
-    login_url = reverse_lazy('login')
     model = Status
     template_name = 'statuses/index.html'
     context_object_name = 'statuses'
