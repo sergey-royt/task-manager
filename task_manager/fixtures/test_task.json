@@ -1,0 +1,10 @@
+{
+  "create": {
+    "valid": {
+      "name": "Update Company Website",
+      "description": "Update the homepage of the website by adding new photos and information about the latest products. Ensure that all links are working correctly.",
+      "author_id": 1,
+      "status_id": 1
+    }
+  }
+}
