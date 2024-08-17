@@ -1,0 +1,31 @@
+{
+  "create": {
+    "valid": {
+      "username": "johndoe123",
+      "first_name": "John",
+      "last_name": "Doe",
+      "password1": "S3cur3P@ssw0rd!",
+      "password2": "S3cur3P@ssw0rd!"
+    },
+    "missing_field": {
+      "first_name": "John",
+      "last_name": "Doe",
+      "password1": "S3cur3P@ssw0rd!",
+      "password2": "S3cur3P@ssw0rd!"
+    },
+    "exists": {
+      "username": "alice_johnson",
+      "first_name": "Alice",
+      "last_name": "Johnson",
+      "password1": "A!c3J0hn$on2024",
+      "password2": "A!c3J0hn$on2024"
+    }
+  },
+  "update": {
+      "username": "michael789",
+      "first_name": "Michael",
+      "last_name": "Smith",
+      "password1": "Str0ng!Passw0rd",
+      "password2": "Str0ng!Passw0rd"
+  }
+}

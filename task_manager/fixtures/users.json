@@ -17,15 +17,6 @@
       "first_name": "Bob",
       "last_name": "Smith",
       "password": "B0b$mith!784@"
-    }},
-  {
-    "model": "users.customuser",
-    "pk": 3,
-    "fields": {
-      "username": "charlie_brown",
-      "first_name": "Charlie",
-      "last_name": "Brown",
-      "password": "C#hr1i3_Br0wn!"
     }
   }
 ]
