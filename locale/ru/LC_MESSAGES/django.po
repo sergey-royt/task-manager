@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-18 14:43+0300\n"
+"POT-Creation-Date: 2024-08-18 20:03+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,17 +24,17 @@ msgstr ""
 msgid "You aren't authorised! Please log in."
 msgstr "Вы не авторизованы! Пожалуйста, выполните вход."
 
-#: task_manager/statuses/models.py:9 task_manager/tasks/models.py:15
+#: task_manager/statuses/models.py:9 task_manager/tasks/models.py:14
 #: task_manager/templates/statuses/index.html:13
 #: task_manager/templates/tasks/index.html:23
 msgid "Name"
 msgstr "Имя"
 
-#: task_manager/statuses/models.py:12 task_manager/tasks/models.py:26
+#: task_manager/statuses/models.py:12 task_manager/tasks/models.py:24
 msgid "Date of creation"
 msgstr "Дата создания"
 
-#: task_manager/statuses/models.py:19 task_manager/tasks/models.py:38
+#: task_manager/statuses/models.py:19 task_manager/tasks/models.py:36
 #: task_manager/templates/tasks/index.html:24
 msgid "Status"
 msgstr "Статус"
@@ -55,49 +55,48 @@ msgid "Status with this Name already exists."
 msgstr "Статус с таким именем уже существует."
 
 #: task_manager/statuses/tests/test_post.py:127
-#: task_manager/statuses/views.py:59
+#: task_manager/statuses/views.py:57
 msgid "Cannot delete status because it in use"
 msgstr "Невозможно удалить статус, потому что он используется"
 
 #: task_manager/statuses/views.py:25
-msgid "Status successfully created"
+msgid "The status has been successfully created"
 msgstr "Статус успешно создан"
 
 #: task_manager/statuses/views.py:27
 msgid "Create status"
 msgstr "Создать статус"
 
-#: task_manager/statuses/views.py:28 task_manager/tasks/views.py:35
+#: task_manager/statuses/views.py:28 task_manager/tasks/views.py:36
 msgid "Create"
 msgstr "Создать"
 
-#: task_manager/statuses/views.py:39
-msgid "Status successfully updated"
+#: task_manager/statuses/views.py:37
+msgid "The status has been successfully updated"
 msgstr "Статус успешно изменен"
 
-#: task_manager/statuses/views.py:41
+#: task_manager/statuses/views.py:39
 msgid "Updating status"
 msgstr "Изменение статуса"
 
-#: task_manager/statuses/views.py:42 task_manager/users/views.py:43
+#: task_manager/statuses/views.py:40 task_manager/tasks/views.py:55
+#: task_manager/users/views.py:43
 msgid "Update"
 msgstr "Изменить"
 
-#: task_manager/statuses/views.py:51
-#, fuzzy
-#| msgid "User successfully deleted"
-msgid "Status successfully deleted"
-msgstr "Пользователь успешно удален"
+#: task_manager/statuses/views.py:49
+msgid "The status has been successfully deleted"
+msgstr "Статус успешно удален"
 
-#: task_manager/statuses/views.py:55
+#: task_manager/statuses/views.py:53
 msgid "Deleting status"
 msgstr "Удаление статуса"
 
-#: task_manager/statuses/views.py:56 task_manager/users/views.py:57
+#: task_manager/statuses/views.py:54 task_manager/users/views.py:57
 msgid "Are you sure you want to delete"
 msgstr "Вы уверены, что хотите удалить"
 
-#: task_manager/statuses/views.py:57 task_manager/users/views.py:58
+#: task_manager/statuses/views.py:55 task_manager/users/views.py:58
 msgid "Yes, delete"
 msgstr "Да, удалить"
 
@@ -105,25 +104,23 @@ msgstr "Да, удалить"
 msgid "Only own tasks"
 msgstr "Только свои задачи"
 
-#: task_manager/tasks/models.py:20
+#: task_manager/tasks/models.py:18
 msgid "Description"
 msgstr "Описание"
 
-#: task_manager/tasks/models.py:31 task_manager/templates/tasks/index.html:25
+#: task_manager/tasks/models.py:29 task_manager/templates/tasks/index.html:25
 msgid "Author"
 msgstr "Вход"
 
-#: task_manager/tasks/models.py:44 task_manager/templates/tasks/index.html:26
+#: task_manager/tasks/models.py:42 task_manager/templates/tasks/index.html:26
 msgid "Executor"
 msgstr "Испольнитель"
 
-#: task_manager/tasks/models.py:54
-#, fuzzy
-#| msgid "Tasks"
+#: task_manager/tasks/models.py:53
 msgid "Task"
 msgstr "Задачи"
 
-#: task_manager/tasks/models.py:55 task_manager/tasks/views.py:21
+#: task_manager/tasks/models.py:54 task_manager/tasks/views.py:22
 #: task_manager/templates/navbar.html:30
 #: task_manager/templates/tasks/index.html:7
 msgid "Tasks"
@@ -133,17 +130,25 @@ msgstr "Задачи"
 msgid "Task with this Name already exists."
 msgstr "Задача с таким именем уже существует."
 
-#: task_manager/tasks/views.py:22
+#: task_manager/tasks/views.py:23
 msgid "Show"
 msgstr "Показать"
 
-#: task_manager/tasks/views.py:32
-msgid "Task successfully created"
+#: task_manager/tasks/views.py:33
+msgid "The task has been successfully created"
 msgstr "Задача успешно создана"
 
-#: task_manager/tasks/views.py:34
+#: task_manager/tasks/views.py:35
 msgid "Create task"
 msgstr "Создать задачу"
+
+#: task_manager/tasks/views.py:50
+msgid "The task has been successfully updated"
+msgstr "Задача успешно изменена"
+
+#: task_manager/tasks/views.py:54
+msgid "Updating task"
+msgstr "Изменение задачи"
 
 #: task_manager/templates/base.html:12
 msgid "Task manager Hexlet"
