@@ -5,7 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from .forms import StatusForm
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
-from task_manager.mixins import AuthRequiredMixin
+from task_manager.mixins import AuthRequiredMixin, DeleteProtectionMixin
 
 
 class StatusIndexView(AuthRequiredMixin, ListView):
@@ -42,7 +42,8 @@ class StatusUpdateView(AuthRequiredMixin,
                      'button_text': _('Update')}
 
 
-class StatusDeleteView(AuthRequiredMixin,
+class StatusDeleteView(DeleteProtectionMixin,
+                       AuthRequiredMixin,
                        SuccessMessageMixin,
                        DeleteView):
 
@@ -54,3 +55,5 @@ class StatusDeleteView(AuthRequiredMixin,
     extra_context = {'title': _('Deleting status'),
                      'text': _('Are you sure you want to delete'),
                      'button_text': _('Yes, delete')}
+    protected_url = reverse_lazy('status_index')
+    protected_message = _('Cannot delete status because it in use')

@@ -3,7 +3,7 @@ from django.shortcuts import reverse
 from http import HTTPStatus
 
 
-class TestUserListView(TaskTestCase):
+class TestTaskIndexView(TaskTestCase):
     def test_access_not_authenticated(self):
         self.client.logout()
         response = self.client.get(reverse('task_index'))
@@ -29,3 +29,16 @@ class TestUserListView(TaskTestCase):
         self.assertEqual(response.context['tasks'].count(), 1)
         self.assertContains(response, self.task1.name)
         self.assertNotContains(response, self.task2.name)
+
+
+class TestTaskCreateView(TaskTestCase):
+    def test_task_create_view_access(self):
+        response = self.client.get(reverse('task_create'))
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, 'form.html')
+
+    def test_task_create_view_access_not_authenticated(self):
+        self.client.logout()
+        response = self.client.get(reverse('task_create'))
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('login'))

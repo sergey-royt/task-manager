@@ -10,7 +10,10 @@
       "name": "Update Company Website",
       "executor": 1,
       "status": 1
+    },
+    "exists": {
+      "name": "Prepare Sales Report",
+      "description": "Collect data on sales for the last quarter and prepare a detailed report for the team meeting."
     }
-
   }
 }

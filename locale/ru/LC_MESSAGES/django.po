@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-17 16:52+0000\n"
+"POT-Creation-Date: 2024-08-18 14:43+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: task_manager/mixins.py:9
+#: task_manager/mixins.py:10
 msgid "You aren't authorised! Please log in."
 msgstr "Вы не авторизованы! Пожалуйста, выполните вход."
 
@@ -44,42 +44,42 @@ msgstr "Статус"
 msgid "Statuses"
 msgstr "Статусы"
 
-#: task_manager/statuses/tests/test_post.py:41
+#: task_manager/statuses/tests/test_post.py:42
+#: task_manager/tasks/tests/test_post.py:25
 #: task_manager/users/tests/test_post.py:26
 msgid "This field is required."
 msgstr "Это обязательное поле."
 
-#: task_manager/statuses/tests/test_post.py:61
+#: task_manager/statuses/tests/test_post.py:62
 msgid "Status with this Name already exists."
 msgstr "Статус с таким именем уже существует."
 
-#: task_manager/statuses/views.py:26
-#, fuzzy
-#| msgid "User successfully created"
-msgid "Status successfully created"
-msgstr "Пользователь успешно зарегистрирован"
+#: task_manager/statuses/tests/test_post.py:127
+#: task_manager/statuses/views.py:59
+msgid "Cannot delete status because it in use"
+msgstr "Невозможно удалить статус, потому что он используется"
 
-#: task_manager/statuses/views.py:28
+#: task_manager/statuses/views.py:25
+msgid "Status successfully created"
+msgstr "Статус успешно создан"
+
+#: task_manager/statuses/views.py:27
 msgid "Create status"
 msgstr "Создать статус"
 
-#: task_manager/statuses/views.py:29
+#: task_manager/statuses/views.py:28 task_manager/tasks/views.py:35
 msgid "Create"
 msgstr "Создать"
 
-#: task_manager/statuses/views.py:40
-#, fuzzy
-#| msgid "User successfully updated"
+#: task_manager/statuses/views.py:39
 msgid "Status successfully updated"
-msgstr "Пользователь успешно изменен"
+msgstr "Статус успешно изменен"
 
-#: task_manager/statuses/views.py:42
-#, fuzzy
-#| msgid "Updating user"
+#: task_manager/statuses/views.py:41
 msgid "Updating status"
-msgstr "Изменение пользователя"
+msgstr "Изменение статуса"
 
-#: task_manager/statuses/views.py:43 task_manager/users/views.py:43
+#: task_manager/statuses/views.py:42 task_manager/users/views.py:43
 msgid "Update"
 msgstr "Изменить"
 
@@ -106,10 +106,8 @@ msgid "Only own tasks"
 msgstr "Только свои задачи"
 
 #: task_manager/tasks/models.py:20
-#, fuzzy
-#| msgid "Registration"
 msgid "Description"
-msgstr "Регистрация"
+msgstr "Описание"
 
 #: task_manager/tasks/models.py:31 task_manager/templates/tasks/index.html:25
 msgid "Author"
@@ -125,15 +123,27 @@ msgstr "Испольнитель"
 msgid "Task"
 msgstr "Задачи"
 
-#: task_manager/tasks/models.py:55 task_manager/tasks/views.py:14
+#: task_manager/tasks/models.py:55 task_manager/tasks/views.py:21
 #: task_manager/templates/navbar.html:30
 #: task_manager/templates/tasks/index.html:7
 msgid "Tasks"
 msgstr "Задачи"
 
-#: task_manager/tasks/views.py:15
+#: task_manager/tasks/tests/test_post.py:46
+msgid "Task with this Name already exists."
+msgstr "Задача с таким именем уже существует."
+
+#: task_manager/tasks/views.py:22
 msgid "Show"
 msgstr "Показать"
+
+#: task_manager/tasks/views.py:32
+msgid "Task successfully created"
+msgstr "Задача успешно создана"
+
+#: task_manager/tasks/views.py:34
+msgid "Create task"
+msgstr "Создать задачу"
 
 #: task_manager/templates/base.html:12
 msgid "Task manager Hexlet"
@@ -212,7 +222,7 @@ msgstr "Имя"
 msgid "last name"
 msgstr "Фамилия"
 
-#: task_manager/users/models.py:14
+#: task_manager/users/models.py:15
 msgid "password"
 msgstr "пароль"
 

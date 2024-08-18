@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container wrapper flex-grow-1">
     <h1 class="my-4">{% trans 'Tasks' %}</h1>
-	<a class="btn btn-primary mb-3" href="#">{% trans 'Create Task' %}</a>
+	<a class="btn btn-primary mb-3" href="{% url 'task_create' %}">{% trans 'Create Task' %}</a>
 
 	<div class="card mb-3">
         <div class="card-body bg-light">

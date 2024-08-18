@@ -4,6 +4,7 @@ from http import HTTPStatus
 from task_manager.statuses.models import Status
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.messages import get_messages
 
 
 class TestCreateStatus(StatusTestCase):
@@ -46,7 +47,7 @@ class TestCreateStatus(StatusTestCase):
             errors['name']
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(Status.objects.count(), self.count)
 
     def test_create_exists(self):
@@ -62,7 +63,7 @@ class TestCreateStatus(StatusTestCase):
             errors['name']
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(Status.objects.count(), self.count)
 
 
@@ -115,11 +116,16 @@ class TestDeleteStatus(StatusTestCase):
         with self.assertRaises(ObjectDoesNotExist):
             Status.objects.get(id=3)
 
-    # def test_delete_bound_status(self) -> None:
-    #     response = self.client.post(
-    #         reverse('status_delete', kwargs={'pk': 1})
-    #     )
-    #
-    #     self.assertEqual(response.status_code, HTTPStatus.FOUND)
-    #     self.assertRedirects(response, reverse('status_index'))
-    #     self.assertEqual(Status.objects.count(), self.count)
+    def test_delete_bound_status(self):
+        response = self.client.post(
+            reverse('status_delete', kwargs={'pk': 1})
+        )
+
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertEqual(
+            str(messages[0]), _('Cannot delete status because it in use')
+        )
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('status_index'))
+        self.assertEqual(Status.objects.count(), self.count)
