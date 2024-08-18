@@ -55,3 +55,7 @@ class TestTaskUpdateView(TaskTestCase):
         response = self.client.get(reverse('task_update', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'form.html')
+
+
+class TestTaskDeleteView(TaskTestCase):
+    ...
