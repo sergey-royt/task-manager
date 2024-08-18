@@ -42,3 +42,16 @@ class TestTaskCreateView(TaskTestCase):
         response = self.client.get(reverse('task_create'))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('login'))
+
+
+class TestTaskUpdateView(TaskTestCase):
+    def test_task_update_view_not_authenticated(self):
+        self.client.logout()
+        response = self.client.get(reverse('task_update', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('login'))
+
+    def test_status_update_view(self):
+        response = self.client.get(reverse('task_update', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, 'form.html')

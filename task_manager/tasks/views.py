@@ -1,5 +1,6 @@
 from django_filters.views import FilterView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
 from task_manager.mixins import AuthRequiredMixin
 from .filters import TaskFilter
 from .models import Task
@@ -24,12 +25,12 @@ class TaskIndexView(AuthRequiredMixin, FilterView):
     ordering = ['pk']
 
 
-class TaskCreateView(AuthRequiredMixin, CreateView):
+class TaskCreateView(AuthRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'form.html'
     model = Task
     form_class = TaskForm
     success_url = reverse_lazy('task_index')
-    success_message = _('Task successfully created')
+    success_message = _('The task has been successfully created')
     extra_context = {
         'title': _('Create task'),
         'button_text': _('Create'),
@@ -39,3 +40,17 @@ class TaskCreateView(AuthRequiredMixin, CreateView):
         user = self.request.user
         form.instance.author = User.objects.get(pk=user.pk)
         return super().form_valid(form)
+
+
+class TaskUpdateView(AuthRequiredMixin, SuccessMessageMixin,
+                     UpdateView
+                     ):
+    model = Task
+    form_class = TaskForm
+    success_message = _('The task has been successfully updated')
+    success_url = reverse_lazy('task_index')
+    template_name = 'form.html'
+    extra_context = {
+        'title': _('Updating task'),
+        'button_text': _('Update'),
+    }

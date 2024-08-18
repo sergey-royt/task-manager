@@ -11,12 +11,10 @@ class Task(models.Model):
     name = models.CharField(
         max_length=150,
         unique=True,
-        blank=False,
         verbose_name=_('Name')
     )
 
     description = models.TextField(
-        blank=False,
         verbose_name=_('Description'),
         max_length=5000
         )
@@ -44,6 +42,7 @@ class Task(models.Model):
         verbose_name=_('Executor'),
         related_name='executor',
         on_delete=models.PROTECT,
+        blank=True,
         null=True
     )
 

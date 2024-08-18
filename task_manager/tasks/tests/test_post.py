@@ -49,3 +49,18 @@ class TestTaskCreate(TaskTestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(Task.objects.count(), self.count)
+
+
+class TestTaskUpdate(TaskTestCase):
+    def test_task_update(self):
+        update_task = self.test_task['update'].copy()
+        response = self.client.post(
+            reverse('task_update', kwargs={'pk': 1}), data=update_task
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('task_index'))
+        self.assertEqual(Task.objects.count(), self.count)
+        self.assertQuerySetEqual(
+            Task.objects.get(pk=1).name, update_task['name']
+        )

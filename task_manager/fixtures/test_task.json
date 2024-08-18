@@ -15,5 +15,11 @@
       "name": "Prepare Sales Report",
       "description": "Collect data on sales for the last quarter and prepare a detailed report for the team meeting."
     }
+  },
+  "update": {
+    "name": "Update Company Website",
+    "description": "Update the homepage of the website by adding new photos and information about the latest products. Ensure that all links are working correctly.",
+    "status": 1,
+    "executor": 1
   }
 }
