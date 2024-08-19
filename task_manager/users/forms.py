@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _

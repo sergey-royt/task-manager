@@ -75,3 +75,18 @@ class TestUserDeleteView(UserTestCase):
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('users_index'))
+
+
+class TestUserChangePasswordView(UserTestCase):
+    def test_change_password_view_not_authenticated(self):
+        self.client.logout()
+        response = self.client.get(
+            reverse('change_password')
+        )
+        self.assertFalse(response.status_code == HTTPStatus.OK)
+        self.assertTrue(response.url.startswith(reverse('login')))
+
+    def test_change_password_view(self):
+        response = self.client.get(reverse('change_password'))
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, 'users/change_password.html')

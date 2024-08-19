@@ -49,19 +49,18 @@ class UserUpdateView(AuthRequiredMixin,
 
 
 class ChangeUserPasswordView(
-    AuthRequiredMixin,
     SuccessMessageMixin,
     PasswordChangeView
 ):
-    login_url = reverse_lazy('login')
     form_class = PasswordChangeForm
     success_message = _('The password has been successfully updated')
-    permission_denied_url = reverse_lazy('users_index')
     template_name = 'users/change_password.html'
     extra_context = {'button_text': _('Change password')}
 
     def get_success_url(self):
-        return reverse_lazy('users_update', kwargs={'pk': self.request.user.pk})
+        return reverse_lazy(
+            'users_update', kwargs={'pk': self.request.user.pk}
+        )
 
 
 class UserDeleteView(AuthRequiredMixin,
