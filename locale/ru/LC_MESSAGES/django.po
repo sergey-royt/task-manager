@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-18 20:03+0300\n"
+"POT-Creation-Date: 2024-08-19 20:30+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,7 +80,7 @@ msgid "Updating status"
 msgstr "Изменение статуса"
 
 #: task_manager/statuses/views.py:40 task_manager/tasks/views.py:55
-#: task_manager/users/views.py:43
+#: task_manager/users/views.py:48
 msgid "Update"
 msgstr "Изменить"
 
@@ -92,11 +92,11 @@ msgstr "Статус успешно удален"
 msgid "Deleting status"
 msgstr "Удаление статуса"
 
-#: task_manager/statuses/views.py:54 task_manager/users/views.py:57
+#: task_manager/statuses/views.py:54 task_manager/users/views.py:78
 msgid "Are you sure you want to delete"
 msgstr "Вы уверены, что хотите удалить"
 
-#: task_manager/statuses/views.py:55 task_manager/users/views.py:58
+#: task_manager/statuses/views.py:55 task_manager/users/views.py:79
 msgid "Yes, delete"
 msgstr "Да, удалить"
 
@@ -175,7 +175,7 @@ msgstr "Выход"
 msgid "Authorization"
 msgstr "Вход"
 
-#: task_manager/templates/navbar.html:45 task_manager/users/views.py:26
+#: task_manager/templates/navbar.html:45 task_manager/users/views.py:28
 msgid "Registration"
 msgstr "Регистрация"
 
@@ -219,6 +219,22 @@ msgstr "Имя пользователя"
 msgid "Full name"
 msgstr "Полное имя"
 
+#: task_manager/templates/users/update.html:8 task_manager/users/views.py:61
+msgid "Change password"
+msgstr "Изменить пароль"
+
+#: task_manager/users/forms.py:22
+msgid "Password"
+msgstr "Пароль"
+
+#: task_manager/users/forms.py:24
+msgid ""
+"Raw passwords are not stored, so there is no way to see this password, but "
+"you can change it using <a href=\"{}\">this form</a>."
+msgstr ""
+"Пароли хранятся в зашифрованном виде, поэтому нет возможности его посмотреть, но "
+"вы можете его изменить <a href=\"{}\">по этой ссылке</a>."
+
 #: task_manager/users/models.py:12
 msgid "first name"
 msgstr "Имя"
@@ -232,36 +248,42 @@ msgid "password"
 msgstr "пароль"
 
 #: task_manager/users/tests/test_post.py:40
-#, fuzzy
-#| msgid "Status with this Name already exists."
 msgid "A user with that username already exists."
-msgstr "Статус с таким именем уже существует."
+msgstr "Пользователь с таким именем уже существует."
 
-#: task_manager/users/views.py:24
+#: task_manager/users/views.py:26
 msgid "User successfully created"
 msgstr "Пользователь успешно зарегистрирован"
 
-#: task_manager/users/views.py:27
+#: task_manager/users/views.py:29
 msgid "Register"
 msgstr "Зарегистрировать"
 
-#: task_manager/users/views.py:40
+#: task_manager/users/views.py:42
 msgid "User successfully updated"
 msgstr "Пользователь успешно изменен"
 
-#: task_manager/users/views.py:42
+#: task_manager/users/views.py:44
+msgid "You don't have rights to update other users."
+msgstr "У вас нет прав для изменения другого пользователя."
+
+#: task_manager/users/views.py:47
 msgid "Updating user"
 msgstr "Изменение пользователя"
 
-#: task_manager/users/views.py:52
+#: task_manager/users/views.py:58
+msgid "The password has been successfully updated"
+msgstr "Пароль успешно изменен"
+
+#: task_manager/users/views.py:73
 msgid "User successfully deleted"
 msgstr "Пользователь успешно удален"
 
-#: task_manager/users/views.py:56
+#: task_manager/users/views.py:77
 msgid "Deleting user"
 msgstr "Изменение пользователя"
 
-#: task_manager/users/views.py:62
+#: task_manager/users/views.py:83
 msgid "You don't have rights to delete other users."
 msgstr "У вас нет прав для изменения другого пользователя."
 
@@ -291,9 +313,6 @@ msgstr "Вы разлогинены"
 
 #~ msgid "Updating users"
 #~ msgstr "Изменение пользователя"
-
-#~ msgid "You don't have rights to update other users."
-#~ msgstr "У вас нет прав для изменения другого пользователя."
 
 #~ msgid "Not shorter than 5 chars. Not longer than 20 chars."
 #~ msgstr "Не короче 5 символов и не более 20."

@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, ReadOnlyPasswordHashField
 from django import forms
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 
@@ -18,19 +19,26 @@ class UserCreateForm(UserCreationForm):
 
 class UserUpdateForm(UserChangeForm):
     password = forms.CharField(
-        disabled=True,
-        initial='*****************',
         label=_("Password"),
         help_text=_(
             "Raw passwords are not stored, so there is no way to see this "
-            "password, but you can "
-            '<a href="../../password/">change it</a>.'
-            ),
+            "password, but you can change it using "
+            '<a href="{}">this form</a>.'
+        ),
+        initial="****************",
+        disabled=True
     )
 
     class Meta(UserChangeForm.Meta):
         model = User
         fields = ['username', 'first_name', 'last_name']
+
+    def __init__(self, *args, **kwargs):
+        super(UserChangeForm, self).__init__(*args, **kwargs)
+        password = self.fields.get('password')
+        password.help_text = password.help_text.format(
+            reverse_lazy("change_password")
+        )
 
     def clean_username(self):
         if (
