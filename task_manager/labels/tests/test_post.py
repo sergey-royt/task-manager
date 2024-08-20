@@ -1,3 +1,5 @@
+from django.contrib.messages import get_messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
@@ -91,3 +93,41 @@ class TestLabelUpdate(LabelTestCase):
         self.assertQuerySetEqual(
             Label.objects.get(pk=1).name, update_label['name']
         )
+
+
+class TestLabelDelete(LabelTestCase):
+    def test_delete_label_not_authenticated(self):
+        self.client.logout()
+
+        response = self.client.post(
+            reverse('labels_delete', kwargs={'pk': 3})
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('login'))
+        self.assertEqual(Label.objects.count(), self.count)
+
+    def test_delete_label(self):
+        response = self.client.post(
+            reverse('labels_delete', kwargs={'pk': 3})
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('labels_index'))
+        self.assertEqual(Label.objects.count(), self.count - 1)
+        with self.assertRaises(ObjectDoesNotExist):
+            Label.objects.get(id=3)
+
+    def test_delete_bound_label(self):
+        response = self.client.post(
+            reverse('labels_delete', kwargs={'pk': 1})
+        )
+
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertEqual(
+            str(messages[0]), _('Cannot delete label because it in use')
+        )
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('labels_index'))
+        self.assertEqual(Label.objects.count(), self.count)

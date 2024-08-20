@@ -49,3 +49,16 @@ class TestLabelUpdateView(LabelTestCase):
         response = self.client.get(reverse('labels_update', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'form.html')
+
+
+class TestLabelDeleteView(LabelTestCase):
+    def test_label_delete_view_not_authenticated(self):
+        self.client.logout()
+        response = self.client.get(reverse('labels_delete', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('login'))
+
+    def test_label_delete_view(self):
+        response = self.client.get(reverse('labels_delete', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, 'labels/delete.html')

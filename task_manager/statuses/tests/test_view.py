@@ -52,13 +52,13 @@ class TestStatusUpdateView(StatusTestCase):
 
 
 class TestStatusDeleteView(StatusTestCase):
-    def test_status_update_view_not_authenticated(self):
+    def test_status_delete_view_not_authenticated(self):
         self.client.logout()
         response = self.client.get(reverse('status_delete', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('login'))
 
-    def test_status_update_view(self):
+    def test_status_delete_view(self):
         response = self.client.get(reverse('status_delete', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'statuses/delete.html')

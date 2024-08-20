@@ -8,7 +8,7 @@ User = get_user_model()
 
 
 class LabelTestCase(TestCase):
-    fixtures = ['users.json', 'labels.json', 'statuses.json', 'labels.json']
+    fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
     test_labels = load_data('test_labels.json')
 
     def setUp(self):
