@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-20 12:12+0300\n"
+"POT-Creation-Date: 2024-08-20 13:08+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,6 +35,7 @@ msgid "Date of creation"
 msgstr "Дата создания"
 
 #: task_manager/statuses/models.py:19 task_manager/tasks/models.py:36
+#: task_manager/templates/tasks/details.html:24
 #: task_manager/templates/tasks/index.html:24
 msgid "Status"
 msgstr "Статус"
@@ -46,7 +47,7 @@ msgstr "Статусы"
 
 #: task_manager/statuses/tests/test_post.py:42
 #: task_manager/tasks/tests/test_post.py:26
-#: task_manager/users/tests/test_post.py:26
+#: task_manager/users/tests/test_post.py:28
 msgid "This field is required."
 msgstr "Это обязательное поле."
 
@@ -67,7 +68,7 @@ msgstr "Статус успешно создан"
 msgid "Create status"
 msgstr "Создать статус"
 
-#: task_manager/statuses/views.py:28 task_manager/tasks/views.py:36
+#: task_manager/statuses/views.py:28 task_manager/tasks/views.py:37
 msgid "Create"
 msgstr "Создать"
 
@@ -79,8 +80,8 @@ msgstr "Статус успешно изменен"
 msgid "Updating status"
 msgstr "Изменение статуса"
 
-#: task_manager/statuses/views.py:40 task_manager/tasks/views.py:55
-#: task_manager/users/views.py:48
+#: task_manager/statuses/views.py:40 task_manager/tasks/views.py:56
+#: task_manager/users/views.py:49
 msgid "Update"
 msgstr "Изменить"
 
@@ -92,13 +93,13 @@ msgstr "Статус успешно удален"
 msgid "Deleting status"
 msgstr "Удаление статуса"
 
-#: task_manager/statuses/views.py:54 task_manager/tasks/views.py:69
-#: task_manager/users/views.py:77
+#: task_manager/statuses/views.py:54 task_manager/tasks/views.py:70
+#: task_manager/users/views.py:81
 msgid "Are you sure you want to delete"
 msgstr "Вы уверены, что хотите удалить"
 
-#: task_manager/statuses/views.py:55 task_manager/tasks/views.py:70
-#: task_manager/users/views.py:78
+#: task_manager/statuses/views.py:55 task_manager/tasks/views.py:71
+#: task_manager/users/views.py:82
 msgid "Yes, delete"
 msgstr "Да, удалить"
 
@@ -110,11 +111,13 @@ msgstr "Только свои задачи"
 msgid "Description"
 msgstr "Описание"
 
-#: task_manager/tasks/models.py:29 task_manager/templates/tasks/index.html:25
+#: task_manager/tasks/models.py:29 task_manager/templates/tasks/details.html:16
+#: task_manager/templates/tasks/index.html:25
 msgid "Author"
 msgstr "Автор"
 
-#: task_manager/tasks/models.py:42 task_manager/templates/tasks/index.html:26
+#: task_manager/tasks/models.py:42 task_manager/templates/tasks/details.html:20
+#: task_manager/templates/tasks/index.html:26
 msgid "Executor"
 msgstr "Испольнитель"
 
@@ -122,7 +125,7 @@ msgstr "Испольнитель"
 msgid "Task"
 msgstr "Задачи"
 
-#: task_manager/tasks/models.py:54 task_manager/tasks/views.py:22
+#: task_manager/tasks/models.py:54 task_manager/tasks/views.py:23
 #: task_manager/templates/navbar.html:30
 #: task_manager/templates/tasks/index.html:7
 msgid "Tasks"
@@ -132,37 +135,41 @@ msgstr "Задачи"
 msgid "Task with this Name already exists."
 msgstr "Задача с таким именем уже существует."
 
-#: task_manager/tasks/views.py:23
+#: task_manager/tasks/views.py:24
 msgid "Show"
 msgstr "Показать"
 
-#: task_manager/tasks/views.py:33
+#: task_manager/tasks/views.py:34
 msgid "The task has been successfully created"
 msgstr "Задача успешно создана"
 
-#: task_manager/tasks/views.py:35
+#: task_manager/tasks/views.py:36
 msgid "Create task"
 msgstr "Создать задачу"
 
-#: task_manager/tasks/views.py:50
+#: task_manager/tasks/views.py:51
 msgid "The task has been successfully updated"
 msgstr "Задача успешно изменена"
 
-#: task_manager/tasks/views.py:54
+#: task_manager/tasks/views.py:55
 msgid "Updating task"
 msgstr "Изменение задачи"
 
-#: task_manager/tasks/views.py:64
+#: task_manager/tasks/views.py:65
 msgid "The task has been successfully deleted"
 msgstr "Задача успешно удалена"
 
-#: task_manager/tasks/views.py:68
+#: task_manager/tasks/views.py:69
 msgid "Deleting task"
 msgstr "Удаление задачи"
 
-#: task_manager/tasks/views.py:74
+#: task_manager/tasks/views.py:75
 msgid "Only the author of the task can delete it"
 msgstr "Задачу может удалить только ее автор"
+
+#: task_manager/tasks/views.py:82
+msgid "Task details"
+msgstr ""
 
 #: task_manager/templates/base.html:12
 msgid "Task manager Hexlet"
@@ -189,7 +196,7 @@ msgstr "Выход"
 msgid "Authorization"
 msgstr "Вход"
 
-#: task_manager/templates/navbar.html:45 task_manager/users/views.py:28
+#: task_manager/templates/navbar.html:45 task_manager/users/views.py:29
 msgid "Registration"
 msgstr "Регистрация"
 
@@ -204,18 +211,21 @@ msgid "ID"
 msgstr "ID"
 
 #: task_manager/templates/statuses/index.html:14
+#: task_manager/templates/tasks/details.html:28
 #: task_manager/templates/tasks/index.html:27
 #: task_manager/templates/users/index.html:14
 msgid "Creation date"
 msgstr "Дата создания"
 
 #: task_manager/templates/statuses/index.html:26
+#: task_manager/templates/tasks/details.html:33
 #: task_manager/templates/tasks/index.html:42
 #: task_manager/templates/users/index.html:27
 msgid "Edit"
 msgstr "Изменить"
 
 #: task_manager/templates/statuses/index.html:29
+#: task_manager/templates/tasks/details.html:35
 #: task_manager/templates/tasks/index.html:45
 #: task_manager/templates/users/index.html:30
 msgid "Delete"
@@ -257,47 +267,51 @@ msgstr "Фамилия"
 msgid "password"
 msgstr "пароль"
 
-#: task_manager/users/tests/test_post.py:40
+#: task_manager/users/tests/test_post.py:42
 msgid "A user with that username already exists."
 msgstr "Пользователь с таким именем уже существует."
 
-#: task_manager/users/views.py:26
+#: task_manager/users/tests/test_post.py:110 task_manager/users/views.py:72
+msgid "It is not possible to delete a user because it is being used"
+msgstr "Невозможно удалить пользователя, потому что он используется"
+
+#: task_manager/users/views.py:27
 msgid "User successfully created"
 msgstr "Пользователь успешно зарегистрирован"
 
-#: task_manager/users/views.py:29
+#: task_manager/users/views.py:30
 msgid "Register"
 msgstr "Зарегистрировать"
 
-#: task_manager/users/views.py:42
+#: task_manager/users/views.py:43
 msgid "User successfully updated"
 msgstr "Пользователь успешно изменен"
 
-#: task_manager/users/views.py:44
+#: task_manager/users/views.py:45
 msgid "You don't have rights to update other users."
 msgstr "У вас нет прав для изменения другого пользователя."
 
-#: task_manager/users/views.py:47
+#: task_manager/users/views.py:48
 msgid "Updating user"
 msgstr "Изменение пользователя"
 
-#: task_manager/users/views.py:56
+#: task_manager/users/views.py:57
 msgid "The password has been successfully updated"
 msgstr "Пароль успешно изменен"
 
-#: task_manager/users/views.py:58
+#: task_manager/users/views.py:59
 msgid "Change password"
 msgstr "Изменить пароль"
 
-#: task_manager/users/views.py:72
+#: task_manager/users/views.py:76
 msgid "User successfully deleted"
 msgstr "Пользователь успешно удален"
 
-#: task_manager/users/views.py:76
+#: task_manager/users/views.py:80
 msgid "Deleting user"
 msgstr "Удаление пользователя"
 
-#: task_manager/users/views.py:82
+#: task_manager/users/views.py:86
 msgid "You don't have rights to delete other users."
 msgstr "У вас нет прав для удаления другого пользователя."
 

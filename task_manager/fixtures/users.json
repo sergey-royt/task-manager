@@ -18,5 +18,15 @@
       "last_name": "Smith",
       "password": "B0b$mith!784@"
     }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 3,
+    "fields": {
+        "username": "david_lee",
+        "first_name": "David",
+        "last_name": "Lee",
+        "password": "D@vidL33!2024$"
+    }
   }
 ]

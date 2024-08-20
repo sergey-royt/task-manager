@@ -7,13 +7,14 @@ User = get_user_model()
 
 
 class UserTestCase(TestCase):
-    fixtures = ['users.json']
+    fixtures = ['users.json', 'statuses.json', 'tasks.json']
     test_user = load_data('test_user.json')
 
     def setUp(self):
         self.users = User.objects.all()
         self.user1 = self.users.get(pk=1)
         self.user2 = self.users.get(pk=2)
+        self.user3 = self.users.get(pk=3)
         self.count = User.objects.count()
 
         self.client = Client()

@@ -4,7 +4,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.translation import gettext_lazy as _
 from .forms import UserCreateForm, UserUpdateForm
 from django.urls import reverse_lazy
-from task_manager.mixins import AuthRequiredMixin, UserPermissionMixin
+from task_manager.mixins import AuthRequiredMixin, UserPermissionMixin, \
+    DeleteProtectionMixin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
@@ -63,11 +64,14 @@ class ChangeUserPasswordView(
         )
 
 
-class UserDeleteView(AuthRequiredMixin,
+class UserDeleteView(DeleteProtectionMixin,
+                     AuthRequiredMixin,
                      UserPermissionMixin,
                      SuccessMessageMixin,
                      DeleteView):
-
+    protected_message = _('It is not possible to delete a user '
+                          'because it is being used')
+    protected_url = reverse_lazy('users_index')
     login_url = reverse_lazy('login')
     success_message = _('User successfully deleted')
     success_url = reverse_lazy('users_index')

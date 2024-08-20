@@ -1,3 +1,5 @@
+from django.contrib.messages import get_messages
+
 from .testcase import UserTestCase
 from django.shortcuts import reverse
 from http import HTTPStatus
@@ -81,17 +83,33 @@ class TestUserUpdate(UserTestCase):
 
 class TestUserDelete(UserTestCase):
     def test_user_delete_self(self):
-        response = self.client.post(reverse('users_delete', kwargs={'pk': 1}))
+        self.client.force_login(self.user3)
+        response = self.client.post(reverse('users_delete', kwargs={'pk': 3}))
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('users_index'))
         self.assertEqual(User.objects.count(), self.count - 1)
         with self.assertRaises(ObjectDoesNotExist):
-            User.objects.get(pk=1)
+            User.objects.get(pk=3)
 
     def test_user_delete_other(self):
         response = self.client.post(reverse('users_delete', kwargs={'pk': 2}))
 
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('users_index'))
+        self.assertEqual(User.objects.count(), self.count)
+
+    def test_user_delete_bound(self):
+        response = self.client.post(
+            reverse('users_delete', kwargs={'pk': 1})
+        )
+
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertEqual(
+            str(messages[0]), _('It is not possible to delete a user '
+                                'because it is being used')
+        )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('users_index'))
         self.assertEqual(User.objects.count(), self.count)
