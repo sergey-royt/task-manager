@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 class TaskTestCase(TestCase):
-    fixtures = ['statuses.json', 'tasks.json', 'users.json']
+    fixtures = ['statuses.json', 'tasks.json', 'users.json', 'labels.json']
     test_task = load_data('test_task.json')
 
     def setUp(self):
