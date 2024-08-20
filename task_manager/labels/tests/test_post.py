@@ -65,3 +65,29 @@ class TestLabelCreate(LabelTestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(Label.objects.count(), self.count)
+
+
+class TestLabelUpdate(LabelTestCase):
+    def test_update_not_authenticated(self):
+        update_label = self.test_labels['update'].copy()
+        self.client.logout()
+        response = self.client.post(
+            reverse('labels_update', kwargs={'pk': 1}), data=update_label
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('login'))
+        self.assertNotEqual(Label.objects.get(pk=1).name, update_label)
+
+    def test_update(self):
+        update_label = self.test_labels['update'].copy()
+        response = self.client.post(
+            reverse('labels_update', kwargs={'pk': 1}), data=update_label
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('labels_index'))
+        self.assertEqual(Label.objects.count(), self.count)
+        self.assertQuerySetEqual(
+            Label.objects.get(pk=1).name, update_label['name']
+        )
