@@ -1,3 +1,4 @@
+from django.views.generic import DetailView
 from django_filters.views import FilterView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -73,3 +74,9 @@ class TaskDeleteView(AuthRequiredMixin,
     permission_denied_message = _(
         "Only the author of the task can delete it"
     )
+
+
+class TaskDetailView(AuthRequiredMixin, DetailView):
+    template_name = 'tasks/details.html'
+    model = Task
+    extra_context = {'title': _('Task details')}

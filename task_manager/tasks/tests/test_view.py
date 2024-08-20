@@ -69,3 +69,12 @@ class TestTaskDeleteView(TaskTestCase):
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('task_index'))
+
+
+class TestTaskDetailView(TaskTestCase):
+    def test_task_detail_view_access(self):
+        response = self.client.get(reverse('task_details', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, 'tasks/details.html')
+        self.assertContains(response, self.task1.name)
+        self.assertContains(response, self.task1.description)

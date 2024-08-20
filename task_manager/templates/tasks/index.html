@@ -32,7 +32,7 @@
         {%for task in tasks %}
         <tr>
 	      <th scope="row">{{ task.id }}</th>
-	        <td>{{ task.name }}</td>
+	        <td><a href="{% url 'task_details' task.id %}">{{ task.name }}</a></td>
             <td>{{ task.status }}</td>
             <td>{{ task.author }}</td>
             <td>{% if task.executor %}{{ task.executor }}{% endif %}</td>
