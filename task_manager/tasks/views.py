@@ -1,7 +1,7 @@
 from django_filters.views import FilterView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
-from task_manager.mixins import AuthRequiredMixin
+from task_manager.mixins import AuthRequiredMixin, AuthorPermissionMixin
 from .filters import TaskFilter
 from .models import Task
 from .forms import TaskForm
@@ -54,3 +54,22 @@ class TaskUpdateView(AuthRequiredMixin, SuccessMessageMixin,
         'title': _('Updating task'),
         'button_text': _('Update'),
     }
+
+
+class TaskDeleteView(AuthRequiredMixin,
+                     AuthorPermissionMixin,
+                     SuccessMessageMixin,
+                     DeleteView):
+
+    success_message = _('The task has been successfully deleted')
+    success_url = reverse_lazy('task_index')
+    template_name = 'tasks/delete.html'
+    model = Task
+    extra_context = {'title': _('Deleting task'),
+                     'text': _('Are you sure you want to delete'),
+                     'button_text': _('Yes, delete')}
+
+    permission_denied_url = reverse_lazy('task_index')
+    permission_denied_message = _(
+        "Only the author of the task can delete it"
+    )

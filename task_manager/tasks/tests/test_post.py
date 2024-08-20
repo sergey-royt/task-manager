@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from .testcase import TaskTestCase
 from django.urls import reverse
 from http import HTTPStatus
@@ -64,3 +65,36 @@ class TestTaskUpdate(TaskTestCase):
         self.assertQuerySetEqual(
             Task.objects.get(pk=1).name, update_task['name']
         )
+
+
+class TestTaskDelete(TaskTestCase):
+    def test_delete_task_not_authenticated(self):
+        self.client.logout()
+
+        response = self.client.post(
+            reverse('task_delete', kwargs={'pk': 1})
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('login'))
+        self.assertEqual(Task.objects.count(), self.count)
+
+    def test_delete_task_own(self):
+        response = self.client.post(
+            reverse('task_delete', kwargs={'pk': 1})
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('task_index'))
+        self.assertEqual(Task.objects.count(), self.count - 1)
+        with self.assertRaises(ObjectDoesNotExist):
+            Task.objects.get(id=1)
+
+    def test_delete_task_foreign(self):
+        response = self.client.post(
+            reverse('task_delete', kwargs={'pk': 2})
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('task_index'))
+        self.assertEqual(Task.objects.count(), self.count)

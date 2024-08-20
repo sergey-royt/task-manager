@@ -58,4 +58,14 @@ class TestTaskUpdateView(TaskTestCase):
 
 
 class TestTaskDeleteView(TaskTestCase):
-    ...
+    def test_task_view_delete_own(self):
+        response = self.client.get(reverse('task_delete', kwargs={'pk': 1}))
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, 'tasks/delete.html')
+
+    def test_task_view_delete_other(self):
+        response = self.client.get(
+            reverse('task_delete', kwargs={'pk': 2})
+        )
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('task_index'))
