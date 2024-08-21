@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from task_manager.views import IndexView, UserLoginView, UserLogoutView
+from task_manager.views import IndexView, UserLoginView, \
+    UserLogoutView, PageNotFoundView
+
+
+handler404 = PageNotFoundView.as_view()
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

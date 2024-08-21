@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4"></h1>
+    <h1 class="my-4"></h1>
+    <div class="display-4">{% trans 'Page not found' %}</div>
+    <br>
+    <a href="{% url 'index' %}">{% trans 'Main Page' %}</a>
+</div>
+{% endblock %}
