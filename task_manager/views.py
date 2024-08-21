@@ -1,7 +1,4 @@
-from http import HTTPStatus
-
-from django.shortcuts import render
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import TemplateView
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
@@ -33,12 +30,3 @@ class UserLogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
         messages.add_message(request, messages.INFO, _('You are logged out'))
         return super().dispatch(request, *args, **kwargs)
-
-
-class PageNotFoundView(View):
-    template = '404.html'
-
-    def get(self, request, *args, **kwargs):
-        return render(
-            request, template_name=self.template, status=HTTPStatus.NOT_FOUND
-        )
