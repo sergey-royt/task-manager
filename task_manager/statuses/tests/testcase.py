@@ -1,12 +1,12 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from task_manager.statuses.models import Status
-from task_manager.helpers import load_data
-
+from task_manager.helpers import load_data, remove_rollbar
 
 User = get_user_model()
 
 
+@remove_rollbar
 class StatusTestCase(TestCase):
     fixtures = ['users.json', 'statuses.json', 'tasks.json', 'labels.json']
     test_status = load_data('test_status.json')
