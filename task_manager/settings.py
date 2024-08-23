@@ -139,12 +139,17 @@ ROLLBAR = {
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+if os.getenv('LANGUAGE'):
+    LANGUAGE_CODE = os.getenv('LANGUAGE')
+else:
+    LANGUAGE_CODE = 'ru-ru'
 
 LANGUAGES = (
     ('en-us', 'English'),
     ('ru-ru', 'Russian'),
 )
+
+
 
 TIME_ZONE = 'UTC'
 
