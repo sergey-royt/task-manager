@@ -19,7 +19,7 @@ django-bootstrap5 = "^24.2"
 flake8 = "^7.1.0"
 python-gettext = "^5.0"
 django-filter = "^24.3"
-rollbar = "^1.0.0"
+rollbar = "0.16.3"
 
 
 [build-system]
