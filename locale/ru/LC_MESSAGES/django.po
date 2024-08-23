@@ -182,7 +182,7 @@ msgstr "Задачи"
 
 #: task_manager/tasks/tests/test_post.py:47
 msgid "Task with this Name already exists."
-msgstr "Задача с таким именем уже существует."
+msgstr "Задачи с таким Имя уже существует."
 
 #: task_manager/tasks/views.py:24
 msgid "Show"
