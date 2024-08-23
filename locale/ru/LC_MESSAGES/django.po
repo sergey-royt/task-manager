@@ -130,6 +130,7 @@ msgstr "Невозможно удалить статус, потому что о
 msgid "The status has been successfully created"
 msgstr "Статус успешно создан"
 
+#: task_manager/templates/statuses/index.html:8
 #: task_manager/statuses/views.py:27
 msgid "Create status"
 msgstr "Создать статус"
@@ -285,10 +286,6 @@ msgstr "Вход"
 #: task_manager/templates/navbar.html:45 task_manager/users/views.py:29
 msgid "Registration"
 msgstr "Регистрация"
-
-#: task_manager/templates/statuses/index.html:8
-msgid "Create Status"
-msgstr "Создать Статус"
 
 #: task_manager/templates/tasks/index.html:8
 msgid "Create Task"
