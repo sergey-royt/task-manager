@@ -20,6 +20,7 @@ flake8 = "^7.1.0"
 python-gettext = "^5.0"
 django-filter = "^24.3"
 rollbar = "0.16.3"
+coverage = "^7.6.1"
 
 
 [build-system]
