@@ -1,9 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django import forms
-from django.urls import reverse_lazy
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import get_user_model, password_validation
+from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
@@ -20,7 +17,9 @@ class UserCreateForm(UserCreationForm):
 class UserUpdateForm(UserCreateForm):
     class Meta(UserChangeForm.Meta):
         model = User
-        fields = ['username', 'first_name', 'last_name', 'password1', 'password2']
+        fields = [
+            'username', 'first_name', 'last_name', 'password1', 'password2'
+        ]
 
     def clean_username(self):
         if (
