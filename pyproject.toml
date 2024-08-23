@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include="task_manager"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 django = "^5.0.7"
 psycopg2-binary = "^2.9.9"
 dj-database-url = "^2.2.0"
@@ -16,7 +16,6 @@ whitenoise = {extras = ["brotli"], version = "^6.7.0"}
 gunicorn = "^22.0.0"
 uvicorn = "^0.30.3"
 django-bootstrap5 = "^24.2"
-faker = "^26.0.0"
 flake8 = "^7.1.0"
 python-gettext = "^5.0"
 django-filter = "^24.3"

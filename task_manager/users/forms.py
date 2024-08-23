@@ -18,8 +18,14 @@ class UserCreateForm(UserCreationForm):
 
 
 class UserUpdateForm(UserChangeForm):
-    password = forms.CharField(
+    password = None
+    password1 = forms.CharField(
         label=_("Password"),
+        initial="****************",
+        disabled=True
+    )
+    password2 = forms.CharField(
+        label=_("Password confirmation"),
         help_text=_(
             "Raw passwords are not stored, so there is no way to see this "
             "password, but you can change it using "
@@ -35,8 +41,8 @@ class UserUpdateForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super(UserChangeForm, self).__init__(*args, **kwargs)
-        password = self.fields.get('password')
-        password.help_text = password.help_text.format(
+        password2 = self.fields.get('password2')
+        password2.help_text = password2.help_text.format(
             reverse_lazy("change_password")
         )
 
