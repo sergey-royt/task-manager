@@ -62,6 +62,7 @@ msgstr "Невозможно удалить метку, потому что он
 msgid "The label has been successfully created"
 msgstr "Метка успешно создана"
 
+#: task_manager/templates/labels/index.html:8
 #: task_manager/labels/views.py:22
 msgid "Create label"
 msgstr "Создать метку"
@@ -234,10 +235,6 @@ msgstr "Менеджер задач Hexlet"
 #: task_manager/templates/form.html:7 task_manager/templates/navbar.html:7
 msgid "Task Manager"
 msgstr "Менеджер задач"
-
-#: task_manager/templates/labels/index.html:8
-msgid "Create Label"
-msgstr "Создать метку"
 
 #: task_manager/templates/labels/index.html:12
 #: task_manager/templates/statuses/index.html:12
