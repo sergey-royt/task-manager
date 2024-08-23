@@ -49,21 +49,6 @@ class UserUpdateView(AuthRequiredMixin,
                      'button_text': _('Update')}
 
 
-class ChangeUserPasswordView(
-    SuccessMessageMixin,
-    PasswordChangeView
-):
-    form_class = PasswordChangeForm
-    success_message = _('The password has been successfully updated')
-    template_name = 'users/change_password.html'
-    extra_context = {'button_text': _('Change password')}
-
-    def get_success_url(self):
-        return reverse_lazy(
-            'users_update', kwargs={'pk': self.request.user.pk}
-        )
-
-
 class UserDeleteView(DeleteProtectionMixin,
                      AuthRequiredMixin,
                      UserPermissionMixin,
