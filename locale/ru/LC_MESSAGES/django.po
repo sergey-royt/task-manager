@@ -52,7 +52,7 @@ msgstr "Это обязательное поле."
 
 #: task_manager/labels/tests/test_post.py:64
 msgid "Label with this Name already exists."
-msgstr "Метка с таким именем уже существует."
+msgstr "Метка с таким Имя уже существует."
 
 #: task_manager/labels/tests/test_post.py:129 task_manager/labels/views.py:49
 msgid "Cannot delete label because it in use"
@@ -120,7 +120,7 @@ msgstr "Статусы"
 
 #: task_manager/statuses/tests/test_post.py:62
 msgid "Status with this Name already exists."
-msgstr "Статус с таким именем уже существует."
+msgstr "Статус с таким Имя уже существует."
 
 #: task_manager/statuses/tests/test_post.py:127
 #: task_manager/statuses/views.py:57
@@ -322,7 +322,7 @@ msgstr "пароль"
 
 #: task_manager/users/tests/test_post.py:42
 msgid "A user with that username already exists."
-msgstr "Пользователь с таким именем уже существует."
+msgstr "Пользователь с таким Имя уже существует."
 
 #: task_manager/users/tests/test_post.py:110 task_manager/users/views.py:72
 msgid "It is not possible to delete a user because it is being used"
