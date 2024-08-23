@@ -34,8 +34,8 @@
 	      <th scope="row">{{ task.id }}</th>
 	        <td><a href="{% url 'task_details' task.id %}">{{ task.name }}</a></td>
             <td>{{ task.status }}</td>
-            <td>{{ task.author }}</td>
-            <td>{% if task.executor %}{{ task.executor }}{% endif %}</td>
+            <td>{{ author.first_name }} {{ author.last_name }}</td>
+            <td>{% if task.executor %}{{ task.executor.first_name }} {{ task.executor.last_name }}{% endif %}</td>
 	        <td>{{ task.created_at|date:"d.m.Y H:i" }}</td>
 	        <td>
 				<a href="{% url 'task_update' task.id %}">
