@@ -36,9 +36,7 @@ class UserUpdateForm(UserCreateForm):
         username = self.cleaned_data.get("username")
         if (
             username
-            and self._meta.model.objects.filter(
-                    username__iexact=username
-                ).exists()
+            and self._meta.model.objects.filter(username__iexact=username).exists()
         ):
             self._update_errors(
                 ValidationError(
