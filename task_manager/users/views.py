@@ -66,5 +66,5 @@ class UserDeleteView(DeleteProtectionMixin,
 
     permission_denied_url = reverse_lazy('users_index')
     permission_denied_message = _(
-        "You don't have rights to delete other users."
+        "You don't have rights to update other users."
     )

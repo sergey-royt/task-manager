@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-23 21:16+0300\n"
+"POT-Creation-Date: 2024-08-24 12:20+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -327,7 +327,8 @@ msgstr "Зарегистрировать"
 msgid "User successfully updated"
 msgstr "Пользователь успешно изменен"
 
-#: task_manager/users/views.py:43
+#: task_manager/users/tests/test_post.py:110 task_manager/users/views.py:55
+#: task_manager/users/views.py:43 task_manager/users/views.py:69
 msgid "You don't have rights to update other users."
 msgstr "У вас нет прав для изменения другого пользователя."
 
@@ -342,10 +343,6 @@ msgstr "Пользователь успешно удален"
 #: task_manager/users/views.py:63
 msgid "Deleting user"
 msgstr "Удаление пользователя"
-
-#: task_manager/users/views.py:69
-msgid "You don't have rights to delete other users."
-msgstr "У вас нет прав для удаления другого пользователя."
 
 #: task_manager/views.py:12
 msgid "Greetings from Hexlet!"
@@ -370,6 +367,9 @@ msgstr "Вы залогинены"
 #: task_manager/views.py:31
 msgid "You are logged out"
 msgstr "Вы разлогинены"
+
+#~ msgid "You don't have rights to delete other users."
+#~ msgstr "У вас нет прав для удаления другого пользователя."
 
 #~ msgid "Password"
 #~ msgstr "Пароль"
