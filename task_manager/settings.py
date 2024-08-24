@@ -107,7 +107,7 @@ DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),
         conn_max_age=600
-        )
+    )
 }
 
 
@@ -148,7 +148,6 @@ LANGUAGES = (
     ('en-us', 'English'),
     ('ru-ru', 'Russian'),
 )
-
 
 
 TIME_ZONE = 'UTC'

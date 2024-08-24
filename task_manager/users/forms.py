@@ -26,8 +26,7 @@ class UserUpdateForm(UserCreateForm):
                 self.get_initial_for_field(
                     self.fields['username'], 'username'
                 ).lower()
-                !=
-                self.cleaned_data.get('username').lower()
+                != self.cleaned_data.get('username').lower()
         ):
             return self._clean_username()
         else:
@@ -37,8 +36,7 @@ class UserUpdateForm(UserCreateForm):
         username = self.cleaned_data.get("username")
         if (
             username
-            and
-                self._meta.model.objects.filter(
+            and self._meta.model.objects.filter(
                     username__iexact=username
                 ).exists()
         ):

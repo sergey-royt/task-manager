@@ -18,7 +18,7 @@ class Task(models.Model):
     description = models.TextField(
         verbose_name=_('Description'),
         max_length=5000
-        )
+    )
 
     created_at = models.DateTimeField(
         auto_now_add=True,
