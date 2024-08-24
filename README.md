@@ -7,6 +7,14 @@
 [![linter and tests](https://github.com/sergey-royt/python-project-52/actions/workflows/linter-check.yml/badge.svg)](https://github.com/sergey-royt/python-project-52/actions/workflows/linter-check.yml)
 <a href="https://codeclimate.com/github/sergey-royt/python-project-52/test_coverage"><img src="https://api.codeclimate.com/v1/badges/1a2a6cfe923166d7cd63/test_coverage" /></a>
 
+<p>
+
+<a href="#about">About</a> •
+<a href="#installation">Installation</a> •
+<a href="#usage">Usage</a> •
+
+</p>
+
 </div>
 
 <h2>About</h2>
