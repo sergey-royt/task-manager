@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 
@@ -28,24 +27,6 @@ class UserUpdateForm(UserCreateForm):
                 ).lower()
                 != self.cleaned_data.get('username').lower()
         ):
-            return self._clean_username()
+            return super().clean_username()
         else:
             return self.cleaned_data.get("username")
-
-    def _clean_username(self):
-        username = self.cleaned_data.get("username")
-        if (
-            username
-            and self._meta.model.objects.filter(username__iexact=username).exists()
-        ):
-            self._update_errors(
-                ValidationError(
-                    {
-                        "username": self.instance.unique_error_message(
-                            self._meta.model, ["username"]
-                        )
-                    }
-                )
-            )
-        else:
-            return username
