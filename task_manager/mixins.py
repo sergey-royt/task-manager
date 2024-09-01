@@ -33,7 +33,7 @@ class DeleteProtectionMixin:
 
     def post(self, request, *args, **kwargs):
         try:
-            return super().post(request, *args, **kwargs)
+            return self.delete(request, *args, **kwargs)
         except ProtectedError:
             messages.error(request, self.protected_message)
             return redirect(self.protected_url)
