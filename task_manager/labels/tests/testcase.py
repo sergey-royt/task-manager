@@ -10,7 +10,7 @@ User = get_user_model()
 @remove_rollbar
 class LabelTestCase(TestCase):
     fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
-    test_labels = load_data('test_labels.json')
+    test_labels = load_data('labels/tests/fixtures/test_labels.json')
 
     def setUp(self):
         self.labels = Label.objects.all()

@@ -4,7 +4,7 @@ from django.test import modify_settings
 
 
 def load_data(path):
-    with open(os.path.abspath(f'task_manager/fixtures/{path}'), 'r') as file:
+    with open(os.path.abspath(f'task_manager/{path}'), 'r') as file:
         return json.loads(file.read())
 
 

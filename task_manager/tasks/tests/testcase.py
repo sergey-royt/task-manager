@@ -11,7 +11,7 @@ User = get_user_model()
 @remove_rollbar
 class TaskTestCase(TestCase):
     fixtures = ['statuses.json', 'tasks.json', 'users.json', 'labels.json']
-    test_task = load_data('test_task.json')
+    test_task = load_data('tasks/tests/fixtures/test_task.json')
 
     def setUp(self):
         self.client = Client()

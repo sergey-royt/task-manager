@@ -100,6 +100,13 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
 ]
 
+FIXTURE_DIRS = [
+    os.path.join(BASE_DIR, 'task_manager/labels/tests/fixtures'),
+    os.path.join(BASE_DIR, 'task_manager/statuses/tests/fixtures'),
+    os.path.join(BASE_DIR, 'task_manager/tasks/tests/fixtures'),
+    os.path.join(BASE_DIR, 'task_manager/users/tests/fixtures'),
+]
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
