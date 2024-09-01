@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import ProtectedError
+from django.http import HttpResponseRedirect
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -30,6 +31,13 @@ class UserPermissionMixin(UserPassesTestMixin):
 class DeleteProtectionMixin:
     protected_message = None
     protected_url = None
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.delete()
+        messages.success(request, self.success_message)
+        return HttpResponseRedirect(success_url)
 
     def post(self, request, *args, **kwargs):
         try:

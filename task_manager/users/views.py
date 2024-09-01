@@ -47,10 +47,10 @@ class UserUpdateView(AuthRequiredMixin,
                      'button_text': _('Update')}
 
 
-class UserDeleteView(DeleteProtectionMixin,
+class UserDeleteView(SuccessMessageMixin,
+                     DeleteProtectionMixin,
                      AuthRequiredMixin,
                      UserPermissionMixin,
-                     SuccessMessageMixin,
                      DeleteView):
     protected_message = _('It is not possible to delete a user '
                           'because it is being used')
