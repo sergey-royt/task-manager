@@ -47,8 +47,7 @@ class UserUpdateView(AuthRequiredMixin,
                      'button_text': _('Update')}
 
 
-class UserDeleteView(SuccessMessageMixin,
-                     DeleteProtectionMixin,
+class UserDeleteView(DeleteProtectionMixin,
                      AuthRequiredMixin,
                      UserPermissionMixin,
                      DeleteView):

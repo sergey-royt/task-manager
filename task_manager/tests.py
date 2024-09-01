@@ -3,12 +3,10 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from http import HTTPStatus
 
-from task_manager.helpers import remove_rollbar
 
 User = get_user_model()
 
 
-@remove_rollbar
 class LoginTest(TestCase):
     def setUp(self):
         self.client = Client()

@@ -35,7 +35,6 @@ class LabelUpdateView(SuccessMessageMixin, AuthRequiredMixin, UpdateView):
 
 class LabelDeleteView(DeleteProtectionMixin,
                       AuthRequiredMixin,
-                      SuccessMessageMixin,
                       DeleteView):
 
     success_message = _('The label has been successfully deleted')

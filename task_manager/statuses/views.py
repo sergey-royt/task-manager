@@ -42,7 +42,6 @@ class StatusUpdateView(AuthRequiredMixin,
 
 class StatusDeleteView(DeleteProtectionMixin,
                        AuthRequiredMixin,
-                       SuccessMessageMixin,
                        DeleteView):
 
     login_url = reverse_lazy('login')
