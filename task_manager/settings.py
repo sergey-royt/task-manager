@@ -182,8 +182,4 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# user model settings
 AUTH_USER_MODEL = 'users.CustomUser'
-
-USERNAME_MAX_LENGTH = os.getenv('USERNAME_MAX_LENGTH', 30)
-MIN_PASSWORD_LENGTH = os.getenv('MIN_PASSWORD_LENGTH', 8)

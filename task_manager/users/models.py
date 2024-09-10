@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 
-from task_manager.settings import MIN_PASSWORD_LENGTH, USERNAME_MAX_LENGTH
+from .settings import MIN_PASSWORD_LENGTH, USERNAME_MAX_LENGTH
 
 
 class CustomUser(AbstractUser):
