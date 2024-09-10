@@ -1,10 +1,11 @@
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView
 from task_manager.labels.models import Label
-from task_manager.mixins import AuthRequiredMixin, DeleteProtectionMixin
+from task_manager.mixins import AuthRequiredMixin
 from .forms import LabelForm
+from task_manager.views import ProtectedDeleteView
 
 
 class LabelIndexView(AuthRequiredMixin, ListView):
@@ -33,9 +34,8 @@ class LabelUpdateView(SuccessMessageMixin, AuthRequiredMixin, UpdateView):
                      'button_text': _('Update')}
 
 
-class LabelDeleteView(DeleteProtectionMixin,
-                      AuthRequiredMixin,
-                      DeleteView):
+class LabelDeleteView(AuthRequiredMixin,
+                      ProtectedDeleteView):
 
     success_message = _('The label has been successfully deleted')
     success_url = reverse_lazy('labels_index')

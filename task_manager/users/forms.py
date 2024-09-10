@@ -21,12 +21,11 @@ class UserUpdateForm(UserCreateForm):
         ]
 
     def clean_username(self):
-        if (
-                self.get_initial_for_field(
-                    self.fields['username'], 'username'
-                ).lower()
-                != self.cleaned_data.get('username').lower()
-        ):
+        is_username_changed = self.get_initial_for_field(
+            self.fields['username'], 'username'
+        ).lower() != self.cleaned_data.get('username').lower()
+
+        if is_username_changed:
             return super().clean_username()
         else:
             return self.cleaned_data.get("username")

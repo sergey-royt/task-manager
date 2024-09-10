@@ -1,13 +1,13 @@
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.translation import gettext_lazy as _
 from .forms import UserCreateForm, UserUpdateForm
 from django.urls import reverse_lazy
-from task_manager.mixins import AuthRequiredMixin, UserPermissionMixin, \
-    DeleteProtectionMixin
+from task_manager.mixins import AuthRequiredMixin, UserPermissionMixin
 from django.contrib.auth import get_user_model
 
+from task_manager.views import ProtectedDeleteView
 
 User = get_user_model()
 
@@ -47,10 +47,9 @@ class UserUpdateView(AuthRequiredMixin,
                      'button_text': _('Update')}
 
 
-class UserDeleteView(DeleteProtectionMixin,
-                     AuthRequiredMixin,
+class UserDeleteView(AuthRequiredMixin,
                      UserPermissionMixin,
-                     DeleteView):
+                     ProtectedDeleteView):
     protected_message = _('It is not possible to delete a user '
                           'because it is being used')
     protected_url = reverse_lazy('users_index')

@@ -1,11 +1,12 @@
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView
 from task_manager.statuses.models import Status
 from django.contrib.messages.views import SuccessMessageMixin
 from .forms import StatusForm
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
-from task_manager.mixins import AuthRequiredMixin, DeleteProtectionMixin
+from task_manager.mixins import AuthRequiredMixin
+from task_manager.views import ProtectedDeleteView
 
 
 class StatusIndexView(AuthRequiredMixin, ListView):
@@ -40,9 +41,8 @@ class StatusUpdateView(AuthRequiredMixin,
                      'button_text': _('Update')}
 
 
-class StatusDeleteView(DeleteProtectionMixin,
-                       AuthRequiredMixin,
-                       DeleteView):
+class StatusDeleteView(AuthRequiredMixin,
+                       ProtectedDeleteView):
 
     login_url = reverse_lazy('login')
     success_message = _('The status has been successfully deleted')

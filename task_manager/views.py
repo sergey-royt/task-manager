@@ -1,3 +1,7 @@
+from django.db.models import ProtectedError
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+from django.views.generic import DeleteView
 from django.views.generic.base import TemplateView
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.views import LoginView, LogoutView
@@ -30,3 +34,22 @@ class UserLogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
         messages.add_message(request, messages.INFO, _('You are logged out'))
         return super().dispatch(request, *args, **kwargs)
+
+
+class ProtectedDeleteView(SuccessMessageMixin, DeleteView):
+    protected_message = None
+    protected_url = None
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.delete()
+        messages.success(request, self.success_message)
+        return HttpResponseRedirect(success_url)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            return self.delete(request, *args, **kwargs)
+        except ProtectedError:
+            messages.error(request, self.protected_message)
+            return redirect(self.protected_url)
