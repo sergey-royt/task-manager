@@ -1,11 +1,11 @@
 {
   "create": {
     "valid": {
-      "username": "johndoe123",
-      "first_name": "John",
-      "last_name": "Doe",
-      "password1": "S3cur3P@ssw0rd!",
-      "password2": "S3cur3P@ssw0rd!"
+      "first_name": "Malika",
+      "last_name": "Hodkiewicz",
+      "username": "malika-hodkiewicz",
+      "password1": "8RvGr5wWTu",
+      "password2": "8RvGr5wWTu"
     },
     "missing_field": {
       "first_name": "John",

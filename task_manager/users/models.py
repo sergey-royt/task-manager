@@ -11,7 +11,7 @@ class CustomUser(AbstractUser):
         _("first name"), max_length=USERNAME_MAX_LENGTH
     )
     last_name = models.CharField(
-        _("last name"), max_length=MIN_PASSWORD_LENGTH
+        _("last name"), max_length=USERNAME_MAX_LENGTH
     )
     password = models.CharField(
         _("password"),
