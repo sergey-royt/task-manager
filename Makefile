@@ -13,7 +13,7 @@ test-coverage:
 	poetry run coverage xml --include=task_manager/* --omit=task_manager/settings.py
 
 lint:
-	poetry run flake8 task_manager --exclude=migrations,settings.py,admin.py
+	poetry run flake8 task_manager --exclude=migrations,task_manager/settings.py,admin.py
 
 shell:
 	poetry run python manage.py shell

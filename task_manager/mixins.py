@@ -18,7 +18,7 @@ class AuthRequiredMixin(LoginRequiredMixin):
 class UserPermissionMixin(UserPassesTestMixin):
     permission_denied_url = None
 
-    def test_func(self):
+    def check_func(self):
         return self.request.user == self.get_object()
 
     def handle_no_permission(self):
@@ -27,5 +27,5 @@ class UserPermissionMixin(UserPassesTestMixin):
 
 
 class AuthorPermissionMixin(UserPermissionMixin):
-    def test_func(self):
+    def check_func(self):
         return self.get_object().author == self.request.user

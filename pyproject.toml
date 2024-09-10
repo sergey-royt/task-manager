@@ -14,15 +14,15 @@ dj-database-url = "^2.2.0"
 python-dotenv = "^1.0.1"
 whitenoise = {extras = ["brotli"], version = "^6.7.0"}
 gunicorn = "^22.0.0"
-uvicorn = "^0.30.3"
 django-bootstrap5 = "^24.2"
-flake8 = "^7.1.0"
 python-gettext = "^5.0"
 django-filter = "^24.3"
 rollbar = "0.16.3"
-coverage = "^7.6.1"
-
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.1.0"
+coverage = "^7.6.1"

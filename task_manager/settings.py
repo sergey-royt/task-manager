@@ -76,7 +76,9 @@ MIDDLEWARE = [
 ]
 
 if os.getenv('ENVIRONMENT') == 'production':
-    MIDDLEWARE.append('rollbar.contrib.django.middleware.RollbarNotifierMiddleware')
+    MIDDLEWARE.append(
+        'rollbar.contrib.django.middleware.RollbarNotifierMiddleware'
+    )
 
 ROOT_URLCONF = 'task_manager.urls'
 
