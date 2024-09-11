@@ -19,6 +19,7 @@ from django.contrib import messages
 
 class IndexView(TemplateView):
     """Main page view"""
+
     template_name = 'index.html'
     extra_context = {'title': _('Greetings from Hexlet!'),
                      'text': _('Practical programming courses'),
@@ -27,6 +28,7 @@ class IndexView(TemplateView):
 
 class UserLoginView(SuccessMessageMixin, LoginView):
     """Log in view with success message"""
+
     template_name = 'form.html'
     authentication_form = AuthenticationForm
     next_page = reverse_lazy('index')
@@ -38,11 +40,13 @@ class UserLoginView(SuccessMessageMixin, LoginView):
 
 class UserLogoutView(LogoutView):
     """Log out view"""
+
     next_page = reverse_lazy('index')
 
     def dispatch(
             self, request: HttpRequest, *args, **kwargs
     ) -> Coroutine[Any, Any, HttpResponseNotAllowed] | HttpResponseNotAllowed:
+        """add 'You are log out' message to response"""
 
         messages.add_message(request, messages.INFO, _('You are logged out'))
         return super().dispatch(request, *args, **kwargs)
@@ -50,12 +54,14 @@ class UserLogoutView(LogoutView):
 
 class ProtectedDeleteView(SuccessMessageMixin, DeleteView):
     """Delete view with protection and success messages"""
+
     protected_message: str | None = None
     protected_url: str | None = None
 
     def delete(
             self, request: HttpRequest, *args, **kwargs
     ) -> HttpResponseRedirect:
+        """Delete object and redirect to success url"""
 
         self.object = self.get_object()
         success_url = self.get_success_url()
@@ -66,6 +72,8 @@ class ProtectedDeleteView(SuccessMessageMixin, DeleteView):
     def post(
             self, request: HttpRequest, *args, **kwargs
     ) -> HttpResponseRedirect:
+        """try to delete object using delete in case ProtectedError raises
+        redirect to protected url with flash message"""
 
         try:
             return self.delete(request, *args, **kwargs)

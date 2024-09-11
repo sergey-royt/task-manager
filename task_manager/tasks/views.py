@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.views.generic import DetailView
 from django_filters.views import FilterView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -15,6 +17,8 @@ User = get_user_model()
 
 
 class TaskIndexView(AuthRequiredMixin, FilterView):
+    """Render list of Task objects ordered by pk"""
+
     model = Task
     filterset_class = TaskFilter
     template_name = 'tasks/index.html'
@@ -27,6 +31,9 @@ class TaskIndexView(AuthRequiredMixin, FilterView):
 
 
 class TaskCreateView(AuthRequiredMixin, SuccessMessageMixin, CreateView):
+    """Task object create view with success message
+    and authentication check"""
+
     template_name = 'form.html'
     model = Task
     form_class = TaskForm
@@ -37,7 +44,10 @@ class TaskCreateView(AuthRequiredMixin, SuccessMessageMixin, CreateView):
         'button_text': _('Create'),
     }
 
-    def form_valid(self, form):
+    def form_valid(self, form: TaskForm) -> Any:
+        """add User object pk reference
+        to Task object author attribute"""
+
         user = self.request.user
         form.instance.author = User.objects.get(pk=user.pk)
         return super().form_valid(form)
@@ -46,6 +56,9 @@ class TaskCreateView(AuthRequiredMixin, SuccessMessageMixin, CreateView):
 class TaskUpdateView(AuthRequiredMixin, SuccessMessageMixin,
                      UpdateView
                      ):
+    """Task object update view with permission check
+    and success message"""
+
     model = Task
     form_class = TaskForm
     success_message = _('The task has been successfully updated')
@@ -61,6 +74,9 @@ class TaskDeleteView(AuthRequiredMixin,
                      AuthorPermissionMixin,
                      SuccessMessageMixin,
                      DeleteView):
+    """Task object delete view.
+    Only Task author can delete it.
+    Add success or permission denied messages to response"""
 
     success_message = _('The task has been successfully deleted')
     success_url = reverse_lazy('task_index')
@@ -77,6 +93,9 @@ class TaskDeleteView(AuthRequiredMixin,
 
 
 class TaskDetailView(AuthRequiredMixin, DetailView):
+    """Task object detail view
+    authorization required"""
+
     template_name = 'tasks/details.html'
     model = Task
     extra_context = {'title': _('Task details')}

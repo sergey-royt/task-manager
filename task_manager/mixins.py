@@ -11,6 +11,7 @@ from django.urls import reverse_lazy
 class AuthRequiredMixin(LoginRequiredMixin):
     """Doesn't allow user make action if he is not logged in
     and redirect him to login page"""
+
     auth_message = _("You aren't authorised! Please log in.")
 
     def dispatch(
@@ -24,6 +25,7 @@ class AuthRequiredMixin(LoginRequiredMixin):
 
 class UserPermissionMixin(UserPassesTestMixin):
     """Doesn't allow user to change other user"""
+
     permission_denied_url: str | None = None
 
     def check_func(self) -> bool:
@@ -39,5 +41,6 @@ class UserPermissionMixin(UserPassesTestMixin):
 
 class AuthorPermissionMixin(UserPermissionMixin):
     """Doesn't allow user to change objects created by other users"""
+
     def check_func(self) -> bool:
         return self.get_object().author == self.request.user

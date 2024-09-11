@@ -3,7 +3,14 @@ from task_manager.tasks.models import Task
 
 
 class TestTaskInstanceCreate(TaskTestCase):
+    """Test Task Model"""
+
     def test_create_instance(self):
+        """
+        Test create Task object with proper credentials
+        Assert objects count increases by one.
+        Assert name, description and author are accurate.
+        """
         credentials = self.test_task['create']['valid'].copy()
         task = Task.objects.create(
             name=credentials['name'],

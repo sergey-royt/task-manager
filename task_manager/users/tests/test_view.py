@@ -28,6 +28,7 @@ class TestUserListView(UserTestCase):
 
 class TestUserCreateView(UserTestCase):
     """Test user create view"""
+
     def test_view_access(self) -> None:
         """Test proper response and template values"""
 

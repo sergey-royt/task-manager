@@ -10,6 +10,8 @@ User = get_user_model()
 
 
 class LoginTest(TestCase):
+    """Test Case for log in view"""
+
     def setUp(self) -> None:
         """Create test client instance and User object for tests"""
 

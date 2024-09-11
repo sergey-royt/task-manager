@@ -9,6 +9,17 @@ User = get_user_model()
 
 
 class Task(models.Model):
+    """
+    Task model with fields:
+    :name: CharField,
+    :description: TextField,
+    :created_at: DateTimeField,
+    :author: ForeignKey(User),
+    :status: ForeignKey(Status),
+    :executor: ForeignKey(User),
+    :labels: ManyToManyField(Labels)
+    """
+
     name = models.CharField(
         max_length=150,
         unique=True,
@@ -57,6 +68,8 @@ class Task(models.Model):
     )
 
     def __str__(self) -> models.CharField:
+        """return task name"""
+
         return self.name
 
     class Meta:
@@ -65,5 +78,7 @@ class Task(models.Model):
 
 
 class TaskLabelRelation(models.Model):
+    """Task and Label relation model"""
+
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     label = models.ForeignKey(Label, on_delete=models.PROTECT)
