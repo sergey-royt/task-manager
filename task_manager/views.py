@@ -1,5 +1,11 @@
+from typing import Any, Coroutine
+
 from django.db.models import ProtectedError
-from django.http import HttpResponseRedirect
+from django.http import (
+    HttpResponseRedirect,
+    HttpRequest,
+    HttpResponseNotAllowed
+)
 from django.shortcuts import redirect
 from django.views.generic import DeleteView
 from django.views.generic.base import TemplateView
@@ -12,6 +18,7 @@ from django.contrib import messages
 
 
 class IndexView(TemplateView):
+    """Main page view"""
     template_name = 'index.html'
     extra_context = {'title': _('Greetings from Hexlet!'),
                      'text': _('Practical programming courses'),
@@ -19,6 +26,7 @@ class IndexView(TemplateView):
 
 
 class UserLoginView(SuccessMessageMixin, LoginView):
+    """Log in view with success message"""
     template_name = 'form.html'
     authentication_form = AuthenticationForm
     next_page = reverse_lazy('index')
@@ -29,25 +37,36 @@ class UserLoginView(SuccessMessageMixin, LoginView):
 
 
 class UserLogoutView(LogoutView):
+    """Log out view"""
     next_page = reverse_lazy('index')
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(
+            self, request: HttpRequest, *args, **kwargs
+    ) -> Coroutine[Any, Any, HttpResponseNotAllowed] | HttpResponseNotAllowed:
+
         messages.add_message(request, messages.INFO, _('You are logged out'))
         return super().dispatch(request, *args, **kwargs)
 
 
 class ProtectedDeleteView(SuccessMessageMixin, DeleteView):
-    protected_message = None
-    protected_url = None
+    """Delete view with protection and success messages"""
+    protected_message: str | None = None
+    protected_url: str | None = None
 
-    def delete(self, request, *args, **kwargs):
+    def delete(
+            self, request: HttpRequest, *args, **kwargs
+    ) -> HttpResponseRedirect:
+
         self.object = self.get_object()
         success_url = self.get_success_url()
         self.object.delete()
         messages.success(request, self.success_message)
         return HttpResponseRedirect(success_url)
 
-    def post(self, request, *args, **kwargs):
+    def post(
+            self, request: HttpRequest, *args, **kwargs
+    ) -> HttpResponseRedirect:
+
         try:
             return self.delete(request, *args, **kwargs)
         except ProtectedError:

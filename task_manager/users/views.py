@@ -13,6 +13,8 @@ User = get_user_model()
 
 
 class UserIndexView(ListView):
+    """Render list of user objects"""
+
     model = User
     template_name = 'users/index.html'
     context_object_name = 'users'
@@ -20,6 +22,8 @@ class UserIndexView(ListView):
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
+    """User object create view with success message"""
+
     form_class = UserCreateForm
     template_name = 'form.html'
     success_message = _('User successfully created')
@@ -32,6 +36,8 @@ class UserUpdateView(AuthRequiredMixin,
                      UserPermissionMixin,
                      SuccessMessageMixin,
                      UpdateView):
+    """User object update view with permission check
+    and success and permission denied messages"""
 
     permission_denied_url = reverse_lazy('users_index')
     login_url = reverse_lazy('login')
@@ -50,6 +56,10 @@ class UserUpdateView(AuthRequiredMixin,
 class UserDeleteView(AuthRequiredMixin,
                      UserPermissionMixin,
                      ProtectedDeleteView):
+    """User object delete view with delete protection
+    if user have tasks. Has a permission check and
+    result messages"""
+
     protected_message = _('It is not possible to delete a user '
                           'because it is being used')
     protected_url = reverse_lazy('users_index')

@@ -56,7 +56,7 @@ class Task(models.Model):
         verbose_name=_('Labels')
     )
 
-    def __str__(self):
+    def __str__(self) -> models.CharField:
         return self.name
 
     class Meta:

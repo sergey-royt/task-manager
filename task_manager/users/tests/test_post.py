@@ -12,7 +12,13 @@ User = get_user_model()
 
 
 class TestUserCreate(UserTestCase):
-    def test_user_create_valid(self):
+    """Test user create"""
+
+    def test_user_create_valid(self) -> None:
+        """test user create with proper credentials
+        test status_code, redirect, user count increases by one,
+        last user is created"""
+
         credentials = self.test_user['create']['valid'].copy()
         response = self.client.post(reverse('users_create'), data=credentials)
 
@@ -21,7 +27,11 @@ class TestUserCreate(UserTestCase):
         self.assertEqual(User.objects.count(), self.count + 1)
         self.assertEqual(User.objects.last().username, credentials['username'])
 
-    def test_user_create_missing_field(self):
+    def test_user_create_missing_field(self) -> None:
+        """test user create with missing field username
+        check username error in response, status_code,
+        user count not changed"""
+
         credentials = self.test_user['create']['missing_field'].copy()
         response = self.client.post(reverse('users_create'), data=credentials)
         errors = response.context['form'].errors
@@ -35,7 +45,11 @@ class TestUserCreate(UserTestCase):
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(User.objects.count(), self.count)
 
-    def test_user_create_username_exists(self):
+    def test_user_create_username_exists(self) -> None:
+        """test create user with existing username
+        check username error in response, status_code,
+        user count not changed"""
+
         credentials = self.test_user['create']['exists'].copy()
         response = self.client.post(reverse('users_create'), data=credentials)
         errors = response.context['form'].errors
@@ -52,7 +66,13 @@ class TestUserCreate(UserTestCase):
 
 
 class TestUserUpdate(UserTestCase):
-    def test_user_update_self(self):
+    """Test user update"""
+
+    def test_user_update_self(self) -> None:
+        """Test user update self with proper credentials
+        check status_code, redirect, user count not changed,
+        user data has been changed"""
+
         credentials = self.test_user['update'].copy()
         response = self.client.post(
             reverse('users_update', kwargs={'pk': 1}), data=credentials
@@ -66,7 +86,11 @@ class TestUserUpdate(UserTestCase):
             credentials['first_name']
         )
 
-    def test_user_update_other(self):
+    def test_user_update_other(self) -> None:
+        """Test user update other user
+        Check status_code, redirect, user count not changed,
+        user data hasn't been changed"""
+
         credentials = self.test_user['update'].copy()
         response = self.client.post(
             reverse('users_update', kwargs={'pk': 2}), data=credentials
@@ -82,7 +106,14 @@ class TestUserUpdate(UserTestCase):
 
 
 class TestUserDelete(UserTestCase):
-    def test_user_delete_self(self):
+    """Test user delete"""
+
+    def test_user_delete_self(self) -> None:
+        """Test user delete self
+        login as user not bounded to any task
+        check status_code, redirect, user count reduce by one,
+        user object doesn't exist"""
+
         self.client.force_login(self.user3)
         response = self.client.post(reverse('users_delete', kwargs={'pk': 3}))
 
@@ -92,14 +123,20 @@ class TestUserDelete(UserTestCase):
         with self.assertRaises(ObjectDoesNotExist):
             User.objects.get(pk=3)
 
-    def test_user_delete_other(self):
+    def test_user_delete_other(self) -> None:
+        """Test user delete other
+        check status_code, redirect, user count not changed"""
+
         response = self.client.post(reverse('users_delete', kwargs={'pk': 2}))
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('users_index'))
         self.assertEqual(User.objects.count(), self.count)
 
-    def test_user_delete_bound(self):
+    def test_user_delete_bound(self) -> None:
+        """Test delete user bound to task
+        check for message, status_code, redirect, user count not changed"""
+
         response = self.client.post(
             reverse('users_delete', kwargs={'pk': 1})
         )
