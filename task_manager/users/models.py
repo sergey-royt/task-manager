@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 
-from .settings import MIN_PASSWORD_LENGTH, USERNAME_MAX_LENGTH
+from .settings import MIN_PASSWORD_LENGTH, NAME_MAX_LENGTH
 
 
 class CustomUser(AbstractUser):
@@ -14,10 +14,10 @@ class CustomUser(AbstractUser):
     Has an overwritten __str__ method returning full name"""
 
     first_name = models.CharField(
-        _("first name"), max_length=USERNAME_MAX_LENGTH
+        _("first name"), max_length=NAME_MAX_LENGTH
     )
     last_name = models.CharField(
-        _("last name"), max_length=USERNAME_MAX_LENGTH
+        _("last name"), max_length=NAME_MAX_LENGTH
     )
     password = models.CharField(
         _("password"),
