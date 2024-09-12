@@ -134,8 +134,10 @@ class TestUserDelete(UserTestCase):
         self.assertEqual(User.objects.count(), self.count)
 
     def test_user_delete_bound(self) -> None:
-        """Test delete user bound to task
-        check for message, status_code, redirect, user count not changed"""
+        """
+        Test delete user bound to task
+        check for message, status_code, redirect, user count not changed
+        """
 
         response = self.client.post(
             reverse('users_delete', kwargs={'pk': 1})

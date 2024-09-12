@@ -10,6 +10,8 @@ from task_manager.views import ProtectedDeleteView
 
 
 class StatusIndexView(AuthRequiredMixin, ListView):
+    """Render list of Status object ordered by pk"""
+
     model = Status
     template_name = 'statuses/index.html'
     context_object_name = 'statuses'
@@ -20,6 +22,9 @@ class StatusCreateView(SuccessMessageMixin,
                        AuthRequiredMixin,
                        CreateView,
                        ):
+    """Status object create view with success message
+    and authentication check"""
+
     form_class = StatusForm
     template_name = 'form.html'
     login_url = reverse_lazy('login')
@@ -32,6 +37,9 @@ class StatusCreateView(SuccessMessageMixin,
 class StatusUpdateView(AuthRequiredMixin,
                        SuccessMessageMixin,
                        UpdateView):
+    """Task object update view with authentication check
+    and success message"""
+
     model = Status
     form_class = StatusForm
     template_name = 'form.html'
@@ -43,6 +51,9 @@ class StatusUpdateView(AuthRequiredMixin,
 
 class StatusDeleteView(AuthRequiredMixin,
                        ProtectedDeleteView):
+    """Status object delete view with delete protection
+        if status is bound to any task.
+        Has an authentication check and result messages"""
 
     login_url = reverse_lazy('login')
     success_message = _('The status has been successfully deleted')
