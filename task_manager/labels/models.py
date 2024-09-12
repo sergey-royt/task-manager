@@ -3,6 +3,12 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Label(models.Model):
+    """
+    Label model with fields:
+    :name: CharField
+    :created_at: DateTimeFiled
+    """
+
     name = models.CharField(max_length=150,
                             unique=True,
                             blank=False,
@@ -12,7 +18,7 @@ class Label(models.Model):
         verbose_name=_('Date of creation')
     )
 
-    def __str__(self):
+    def __str__(self) -> models.CharField:
         return self.name
 
     class Meta:

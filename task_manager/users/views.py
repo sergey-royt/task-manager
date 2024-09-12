@@ -56,9 +56,11 @@ class UserUpdateView(AuthRequiredMixin,
 class UserDeleteView(AuthRequiredMixin,
                      UserPermissionMixin,
                      ProtectedDeleteView):
-    """User object delete view with delete protection
+    """
+    User object delete view with delete protection
     if user have tasks. Has a permission check and
-    result messages"""
+    result messages
+    """
 
     protected_message = _('It is not possible to delete a user '
                           'because it is being used')

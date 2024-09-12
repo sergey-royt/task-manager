@@ -18,9 +18,11 @@ class TaskTestCase(TestCase):
     test_task = load_data('tasks/tests/fixtures/test_task.json')
 
     def setUp(self) -> None:
-        """Set up test client, 2 tasks and user from test db
+        """
+        Set up test client, 2 tasks and user from test db
         initialize self count value which is 2
-        make a force login with user credentials"""
+        make a force login with user credentials
+        """
 
         self.client = Client()
         self.user = User.objects.get(pk=1)

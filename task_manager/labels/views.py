@@ -9,6 +9,8 @@ from task_manager.views import ProtectedDeleteView
 
 
 class LabelIndexView(AuthRequiredMixin, ListView):
+    """Render list of Labels ordered by pk"""
+
     model = Label
     template_name = 'labels/index.html'
     context_object_name = 'labels'
@@ -16,6 +18,9 @@ class LabelIndexView(AuthRequiredMixin, ListView):
 
 
 class LabelCreateView(SuccessMessageMixin, AuthRequiredMixin, CreateView):
+    """Label object create view with success message
+    and authentication check"""
+
     form_class = LabelForm
     template_name = 'form.html'
     success_message = _('The label has been successfully created')
@@ -25,6 +30,9 @@ class LabelCreateView(SuccessMessageMixin, AuthRequiredMixin, CreateView):
 
 
 class LabelUpdateView(SuccessMessageMixin, AuthRequiredMixin, UpdateView):
+    """Label object update view with authentication check
+    and success message"""
+
     model = Label
     form_class = LabelForm
     template_name = 'form.html'
@@ -36,6 +44,11 @@ class LabelUpdateView(SuccessMessageMixin, AuthRequiredMixin, UpdateView):
 
 class LabelDeleteView(AuthRequiredMixin,
                       ProtectedDeleteView):
+    """
+    Label object delete view with delete protection
+    if user have tasks. Has a authentication check and
+    result messages
+    """
 
     success_message = _('The label has been successfully deleted')
     success_url = reverse_lazy('labels_index')

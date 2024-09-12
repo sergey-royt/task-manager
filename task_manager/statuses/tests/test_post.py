@@ -140,7 +140,7 @@ class TestDeleteStatus(StatusTestCase):
 
     def test_delete_status_not_authenticated(self) -> None:
         """
-        Test Task delete not authenticated
+        Test Status delete not authenticated
         Check status code, redirect to log in page,
         Status object count not changed
         """
