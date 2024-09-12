@@ -106,7 +106,7 @@ class TestTaskDelete(TaskTestCase):
 
     def test_delete_task_not_authenticated(self) -> None:
         """
-        Test Task dekete not authenticated
+        Test Task delete not authenticated
         Check status code, redirect to log in page,
         Task object count not changed
         """

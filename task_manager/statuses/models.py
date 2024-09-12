@@ -3,6 +3,10 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Status(models.Model):
+    """Status model with fields:
+    :name: CharField,
+    :created_at: DateTimeField"""
+
     name = models.CharField(max_length=150,
                             unique=True,
                             blank=False,
@@ -12,7 +16,9 @@ class Status(models.Model):
         verbose_name=_('Date of creation')
     )
 
-    def __str__(self):
+    def __str__(self) -> models.CharField:
+        """Return status name"""
+
         return self.name
 
     class Meta:
