@@ -17,7 +17,7 @@ User = get_user_model()
 
 
 class TaskIndexView(AuthRequiredMixin, FilterView):
-    """Render list of Task objects ordered by pk"""
+    """Render list of Task objects ordered by pk and filter form"""
 
     model = Task
     filterset_class = TaskFilter

@@ -12,6 +12,7 @@ class CustomUser(AbstractUser):
     and last_name, and min password length
     (can be set up using env variables specified in users/settings.py)
     Has an overwritten __str__ method returning full name"""
+
     first_name = models.CharField(
         _("first name"), max_length=USERNAME_MAX_LENGTH
     )

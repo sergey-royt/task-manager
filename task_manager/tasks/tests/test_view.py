@@ -7,8 +7,10 @@ class TestTaskIndexView(TaskTestCase):
     """Test Task index view"""
 
     def test_access_not_authenticated(self) -> None:
-        """Test not authenticated access
-        check status code and redirect address"""
+        """
+        Test not authenticated access
+        check status code and redirect address
+        """
 
         self.client.logout()
         response = self.client.get(reverse('task_index'))
@@ -24,8 +26,10 @@ class TestTaskIndexView(TaskTestCase):
         self.assertTemplateUsed(response, 'tasks/index.html')
 
     def test_content(self) -> None:
-        """Test page content without any filters
-        Check all Task objects are shown"""
+        """
+        Test page content without any filters
+        Check all Task objects are shown
+        """
 
         response = self.client.get(reverse('task_index'))
         self.assertEqual(response.context['tasks'].count(), self.count)
@@ -49,7 +53,7 @@ class TestTaskCreateView(TaskTestCase):
     """Test Task create view"""
 
     def test_task_create_view_access(self) -> None:
-        """test proper status code and template used"""
+        """test proper status code and template is used"""
 
         response = self.client.get(reverse('task_create'))
         self.assertEqual(response.status_code, HTTPStatus.OK)
