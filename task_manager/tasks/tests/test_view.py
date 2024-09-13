@@ -1,128 +1,139 @@
-from .testcase import TaskTestCase
 from django.shortcuts import reverse
 from http import HTTPStatus
+from django.test import TestCase
+from django.contrib.auth import get_user_model
+
+from task_manager.tasks.models import Task
 
 
-class TestTaskIndexView(TaskTestCase):
-    """Test Task index view"""
+User = get_user_model()
 
-    def test_access_not_authenticated(self) -> None:
-        """
-        Test not authenticated access
-        check status code and redirect address
-        """
 
-        self.client.logout()
+class TestTaskIndexView(TestCase):
+    fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
+
+    def test_access_and_content(self) -> None:
+
         response = self.client.get(reverse('task_index'))
+
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('login'))
 
-    def test_access(self) -> None:
-        """Test authenticated access
-        check status code and used template"""
+        user = User.objects.get(pk=1)
+
+        self.client.force_login(user)
 
         response = self.client.get(reverse('task_index'))
+
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'tasks/index.html')
-
-    def test_content(self) -> None:
-        """
-        Test page content without any filters
-        Check all Task objects are shown
-        """
-
-        response = self.client.get(reverse('task_index'))
-        self.assertEqual(response.context['tasks'].count(), self.count)
+        self.assertEqual(
+            response.context['tasks'].count(), Task.objects.count()
+        )
         self.assertQuerysetEqual(
             response.context['tasks'],
-            self.tasks,
+            Task.objects.all(),
             ordered=False
         )
 
     def test_filter(self) -> None:
-        """Test page content with status filter
-        Check count of tasks shown
-        Check only proper task shown"""
+        user = User.objects.get(pk=1)
+
+        self.client.force_login(user)
+
         response = self.client.get(reverse('task_index'), {'status': 1})
+
         self.assertEqual(response.context['tasks'].count(), 1)
-        self.assertContains(response, self.task1.name)
-        self.assertNotContains(response, self.task2.name)
+        self.assertContains(response, Task.objects.get(pk=1))
+        self.assertNotContains(response, Task.objects.get(pk=2))
 
 
-class TestTaskCreateView(TaskTestCase):
-    """Test Task create view"""
+class TestTaskCreateView(TestCase):
 
     def test_task_create_view_access(self) -> None:
-        """test proper status code and template is used"""
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
 
         response = self.client.get(reverse('task_create'))
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(response, 'form.html')
 
-    def test_task_create_view_access_not_authenticated(self) -> None:
-        """test proper status code and redirect to log in page"""
-
-        self.client.logout()
-        response = self.client.get(reverse('task_create'))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('login'))
 
+        self.client.force_login(user)
 
-class TestTaskUpdateView(TaskTestCase):
-    """Test Task update view"""
+        response = self.client.get(reverse('task_create'))
 
-    def test_task_update_view_not_authenticated(self) -> None:
-        """test proper status code and redirect to log in page"""
-
-        self.client.logout()
-        response = self.client.get(reverse('task_update', kwargs={'pk': 1}))
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('login'))
-
-    def test_status_update_view(self) -> None:
-        """Test proper status code and template trying update authenticated"""
-
-        response = self.client.get(reverse('task_update', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'form.html')
 
 
-class TestTaskDeleteView(TaskTestCase):
-    """Test Task delete view"""
+class TestTaskUpdateView(TestCase):
+    fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
+
+    def test_task_update_view_access(self) -> None:
+        user = User.objects.get(pk=1)
+        task = Task.objects.get(pk=1)
+
+        response = self.client.get(
+            reverse('task_update', kwargs={'pk': task.pk})
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('login'))
+
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse('task_update', kwargs={'pk': task.pk})
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, 'form.html')
+
+
+class TestTaskDeleteView(TestCase):
+    fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
 
     def test_task_view_delete_own(self) -> None:
-        """Test proper status code and template values
-        trying to delete own task"""
+        user = User.objects.get(pk=1)
+        task = Task.objects.get(pk=1)
 
-        response = self.client.get(reverse('task_delete', kwargs={'pk': 1}))
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse('task_delete', kwargs={'pk': task.pk})
+        )
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'tasks/delete.html')
 
     def test_task_view_delete_other(self) -> None:
-        """
-        Test proper status code and redirect to task index page
-        trying to delete task created by other user
-        """
+        user = User.objects.get(pk=1)
+        task = Task.objects.get(pk=2)
+
+        self.client.force_login(user)
 
         response = self.client.get(
-            reverse('task_delete', kwargs={'pk': 2})
+            reverse('task_delete', kwargs={'pk': task.pk})
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('task_index'))
 
 
-class TestTaskDetailView(TaskTestCase):
-    """Test Task detail view"""
+class TestTaskDetailView(TestCase):
+    fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
 
     def test_task_detail_view_access(self) -> None:
-        """
-        Test Task detail view authenticated
-        Check status code, used template,
-        task name and description accuracy
-        """
+        user = User.objects.get(pk=1)
+        task = Task.objects.get(pk=2)
 
-        response = self.client.get(reverse('task_details', kwargs={'pk': 1}))
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse('task_details', kwargs={'pk': task.pk})
+        )
+
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'tasks/details.html')
-        self.assertContains(response, self.task1.name)
-        self.assertContains(response, self.task1.description)
+        self.assertContains(response, task.name)
+        self.assertContains(response, task.description)

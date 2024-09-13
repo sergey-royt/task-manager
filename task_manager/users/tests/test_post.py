@@ -23,7 +23,6 @@ class TestUserCreate(TestCase):
             "password1": "8RvGr5wWTu",
             "password2": "8RvGr5wWTu"
         }
-
         response = self.client.post(reverse('users_create'), data=credentials)
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)

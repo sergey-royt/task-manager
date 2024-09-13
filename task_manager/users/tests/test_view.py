@@ -1,6 +1,6 @@
 from django.shortcuts import reverse
 from django.urls import reverse_lazy
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.contrib.auth import get_user_model
 from http import HTTPStatus
 
@@ -12,11 +12,10 @@ class TestUserListView(TestCase):
     fixtures = ['users.json']
 
     def test_access_and_content(self) -> None:
-        client = Client()
         count = User.objects.count()
         users = User.objects.all()
 
-        response = client.get(reverse('users_index'))
+        response = self.client.get(reverse('users_index'))
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'users/index.html')
