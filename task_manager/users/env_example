@@ -1,0 +1,4 @@
+# You can specify following values
+
+NAME_MAX_LENGTH=30 by default
+MIN_PASSWORD_LENGTH=8 by default

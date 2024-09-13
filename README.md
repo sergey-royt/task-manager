@@ -113,6 +113,9 @@ If you choose to use **SQLite**:
 DATABASE_URL=sqlite:///{PATH}
 ```
 
+_Please check ```env_example``` files in app root directory and users app directory for more information 
+about environment variables._
+
 To create the necessary tables in the database, start the migration process:
 ```bash
 >> make migrate
