@@ -31,8 +31,9 @@ class LoginTest(TestCase):
         """test logout"""
 
         client = Client()
-        user_data = {'username': 'username', 'password': 'G00d_pa$$w0rd'}
-        user = User.objects.create_user(**user_data)
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
 
         client.force_login(user)
         response = client.post(reverse('logout'), follow=True)

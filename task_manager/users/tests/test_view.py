@@ -1,101 +1,138 @@
-from .testcase import UserTestCase
 from django.shortcuts import reverse
 from django.urls import reverse_lazy
+from django.test import TestCase, Client
+from django.contrib.auth import get_user_model
 from http import HTTPStatus
 
 
-class TestUserListView(UserTestCase):
-    """Test user index view"""
+User = get_user_model()
 
-    def test_access(self) -> None:
-        """Test proper response and template values"""
 
-        response = self.client.get(reverse('users_index'))
+class TestUserListView(TestCase):
+    fixtures = ['users.json']
+
+    def test_access_and_content(self) -> None:
+        client = Client()
+        count = User.objects.count()
+        users = User.objects.all()
+
+        response = client.get(reverse('users_index'))
+
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'users/index.html')
-
-    def test_content(self) -> None:
-        """Test if page contains proper count of users"""
-
-        response = self.client.get(reverse('users_index'))
-        self.assertEqual(response.context['users'].count(), self.count)
+        self.assertEqual(response.context['users'].count(), count)
         self.assertQuerysetEqual(
             response.context['users'],
-            self.users,
+            users,
             ordered=False
         )
 
 
-class TestUserCreateView(UserTestCase):
-    """Test user create view"""
+class TestUserCreateView(TestCase):
 
     def test_view_access(self) -> None:
-        """Test proper response and template values"""
+        client = Client()
 
-        response = self.client.get(reverse('users_create'))
+        response = client.get(reverse('users_create'))
+
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'form.html')
 
 
-class TestUserUpdateView(UserTestCase):
-    """Test user update view"""
+class TestUserUpdateView(TestCase):
 
     def test_view_update_not_authenticated(self) -> None:
-        """test proper response and redirect when not signed in"""
-
-        self.client.logout()
-        response = self.client.get(
-            reverse('users_update', kwargs={'pk': 1})
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
+        client = Client()
+
+        response = client.get(
+            reverse('users_update', kwargs={'pk': user.pk})
+        )
+
         self.assertFalse(response.status_code == HTTPStatus.OK)
         self.assertRedirects(response, reverse('login'))
 
     def test_view_update_self(self) -> None:
-        """Test proper response and template values trying update self"""
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
 
-        response = self.client.get(
-            reverse('users_update', kwargs={'pk': 1})
+        client = Client()
+        client.force_login(user)
+
+        response = client.get(
+            reverse('users_update', kwargs={'pk': user.pk})
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'form.html')
 
     def test_view_update_other(self) -> None:
-        """test proper response and redirect trying to update other user"""
-        response = self.client.get(
-            reverse_lazy('users_update', kwargs={'pk': 2})
+        user1 = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
+        user2 = User.objects.create_user(
+            {'username': 'test', 'password': '$ecurE_paSSw0rD'}
+        )
+
+        client = Client()
+        client.force_login(user1)
+
+        response = client.get(
+            reverse_lazy('users_update', kwargs={'pk': user2.pk})
+        )
+
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('users_index'))
 
 
-class TestUserDeleteView(UserTestCase):
-    """Test user delete view"""
-    def test_view_delete_not_authenticated(self) -> None:
-        """test proper response and redirect when not signed in"""
+class TestUserDeleteView(TestCase):
 
-        self.client.logout()
-        response = self.client.get(
-            reverse('users_delete', kwargs={'pk': 1})
+    def test_view_delete_not_authenticated(self) -> None:
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
+
+        client = Client()
+
+        response = client.get(
+            reverse('users_delete', kwargs={'pk': user.pk})
+        )
+
         self.assertFalse(response.status_code == HTTPStatus.OK)
         self.assertRedirects(response, reverse('login'))
 
     def test_view_delete_self(self) -> None:
-        """Test proper response and template values trying to delete self"""
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
 
-        response = self.client.get(
-            reverse('users_delete', kwargs={'pk': 1})
+        client = Client()
+        client.force_login(user)
+
+        response = client.get(
+            reverse('users_delete', kwargs={'pk': user.pk})
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'users/delete.html')
 
     def test_view_delete_other(self) -> None:
-        """test proper response and redirect trying to delete other user"""
-
-        response = self.client.get(
-            reverse_lazy('users_delete', kwargs={'pk': 2})
+        user1 = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
+        user2 = User.objects.create_user(
+            {'username': 'test', 'password': '$ecurE_paSSw0rD'}
+        )
+
+        client = Client()
+        client.force_login(user1)
+
+        response = client.get(
+            reverse_lazy('users_delete', kwargs={'pk': user2.pk})
+        )
+
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('users_index'))
