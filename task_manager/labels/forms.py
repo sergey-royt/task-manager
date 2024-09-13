@@ -8,4 +8,4 @@ class LabelForm(ModelForm):
 
     class Meta(ModelForm):
         model = Label
-        fields = ['name']
+        fields = ["name"]

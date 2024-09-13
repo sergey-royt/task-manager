@@ -27,97 +27,94 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', False) == 'True'
+DEBUG = os.getenv("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = [
-    'webserver',
-    '127.0.0.1',
-    '0.0.0.0',
-    'testserver',
-    'localhost',
+    "webserver",
+    "127.0.0.1",
+    "0.0.0.0",
+    "testserver",
+    "localhost",
 ]
 
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'task_manager',
-    'django_bootstrap5',
-    'task_manager.users.apps.UsersConfig',
-    'task_manager.statuses',
-    'task_manager.tasks',
-    'task_manager.labels',
-    'django_filters',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "task_manager",
+    "django_bootstrap5",
+    "task_manager.users.apps.UsersConfig",
+    "task_manager.statuses",
+    "task_manager.tasks",
+    "task_manager.labels",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-if os.getenv('ENVIRONMENT') == 'production':
+if os.getenv("ENVIRONMENT") == "production":
     MIDDLEWARE.append(
-        'rollbar.contrib.django.middleware.RollbarNotifierMiddleware'
+        "rollbar.contrib.django.middleware.RollbarNotifierMiddleware"
     )
 
-ROOT_URLCONF = 'task_manager.urls'
+ROOT_URLCONF = "task_manager.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'task_manager.wsgi.application'
+WSGI_APPLICATION = "task_manager.wsgi.application"
 
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale')
-]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 FIXTURE_DIRS = [
-    os.path.join(BASE_DIR, 'task_manager/labels/tests/fixtures'),
-    os.path.join(BASE_DIR, 'task_manager/statuses/tests/fixtures'),
-    os.path.join(BASE_DIR, 'task_manager/tasks/tests/fixtures'),
-    os.path.join(BASE_DIR, 'task_manager/users/tests/fixtures'),
+    os.path.join(BASE_DIR, "task_manager/labels/tests/fixtures"),
+    os.path.join(BASE_DIR, "task_manager/statuses/tests/fixtures"),
+    os.path.join(BASE_DIR, "task_manager/tasks/tests/fixtures"),
+    os.path.join(BASE_DIR, "task_manager/users/tests/fixtures"),
 ]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600
+    "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL"), conn_max_age=600
     )
 }
 
@@ -127,41 +124,41 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 ROLLBAR = {
-    'access_token': os.getenv('ROLLBAR_TOKEN'),
-    'environment': os.getenv('ENVIRONMENT'),
-    'code_version': '1.0',
-    'root': str(BASE_DIR),
+    "access_token": os.getenv("ROLLBAR_TOKEN"),
+    "environment": os.getenv("ENVIRONMENT"),
+    "code_version": "1.0",
+    "root": str(BASE_DIR),
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-if os.getenv('LANGUAGE'):
-    LANGUAGE_CODE = os.getenv('LANGUAGE')
+if os.getenv("LANGUAGE"):
+    LANGUAGE_CODE = os.getenv("LANGUAGE")
 else:
-    LANGUAGE_CODE = 'ru-ru'
+    LANGUAGE_CODE = "ru-ru"
 
 LANGUAGES = (
-    ('en-us', 'English'),
-    ('ru-ru', 'Russian'),
+    ("en-us", "English"),
+    ("ru-ru", "Russian"),
 )
 
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -171,17 +168,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
-LOGIN_URL = reverse_lazy('login')
+LOGIN_URL = reverse_lazy("login")
 
 if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+    STATICFILES_STORAGE = (
+        "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    )
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = "users.CustomUser"

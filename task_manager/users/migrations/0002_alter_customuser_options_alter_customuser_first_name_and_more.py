@@ -7,27 +7,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0001_initial'),
+        ("users", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='customuser',
-            options={'verbose_name': 'user', 'verbose_name_plural': 'users'},
+            name="customuser",
+            options={"verbose_name": "user", "verbose_name_plural": "users"},
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='first_name',
-            field=models.CharField(max_length=30, verbose_name='first name'),
+            model_name="customuser",
+            name="first_name",
+            field=models.CharField(max_length=30, verbose_name="first name"),
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='last_name',
-            field=models.CharField(max_length=30, verbose_name='last name'),
+            model_name="customuser",
+            name="last_name",
+            field=models.CharField(max_length=30, verbose_name="last name"),
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='password',
-            field=models.CharField(max_length=128, validators=[django.core.validators.MinLengthValidator(8)], verbose_name='password'),
+            model_name="customuser",
+            name="password",
+            field=models.CharField(
+                max_length=128,
+                validators=[django.core.validators.MinLengthValidator(8)],
+                verbose_name="password",
+            ),
         ),
     ]

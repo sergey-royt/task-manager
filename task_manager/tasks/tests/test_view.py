@@ -10,30 +10,28 @@ User = get_user_model()
 
 
 class TestTaskIndexView(TestCase):
-    fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
+    fixtures = ["users.json", "labels.json", "statuses.json", "tasks.json"]
 
     def test_access_and_content(self) -> None:
 
-        response = self.client.get(reverse('task_index'))
+        response = self.client.get(reverse("task_index"))
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(response, reverse("login"))
 
         user = User.objects.get(pk=1)
 
         self.client.force_login(user)
 
-        response = self.client.get(reverse('task_index'))
+        response = self.client.get(reverse("task_index"))
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(response, 'tasks/index.html')
+        self.assertTemplateUsed(response, "tasks/index.html")
         self.assertEqual(
-            response.context['tasks'].count(), Task.objects.count()
+            response.context["tasks"].count(), Task.objects.count()
         )
         self.assertQuerysetEqual(
-            response.context['tasks'],
-            Task.objects.all(),
-            ordered=False
+            response.context["tasks"], Task.objects.all(), ordered=False
         )
 
     def test_filter(self) -> None:
@@ -41,9 +39,9 @@ class TestTaskIndexView(TestCase):
 
         self.client.force_login(user)
 
-        response = self.client.get(reverse('task_index'), {'status': 1})
+        response = self.client.get(reverse("task_index"), {"status": 1})
 
-        self.assertEqual(response.context['tasks'].count(), 1)
+        self.assertEqual(response.context["tasks"].count(), 1)
         self.assertContains(response, Task.objects.get(pk=1))
         self.assertNotContains(response, Task.objects.get(pk=2))
 
@@ -52,48 +50,48 @@ class TestTaskCreateView(TestCase):
 
     def test_task_create_view_access(self) -> None:
         user = User.objects.create_user(
-            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+            {"username": "username", "password": "G00d_pa$$w0rd"}
         )
 
-        response1 = self.client.get(reverse('task_create'))
+        response1 = self.client.get(reverse("task_create"))
 
         self.assertEqual(response1.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response1, reverse('login'))
+        self.assertRedirects(response1, reverse("login"))
 
         self.client.force_login(user)
 
-        response2 = self.client.get(reverse('task_create'))
+        response2 = self.client.get(reverse("task_create"))
 
         self.assertEqual(response2.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(response2, 'form.html')
+        self.assertTemplateUsed(response2, "form.html")
 
 
 class TestTaskUpdateView(TestCase):
-    fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
+    fixtures = ["users.json", "labels.json", "statuses.json", "tasks.json"]
 
     def test_task_update_view_access(self) -> None:
         user = User.objects.get(pk=1)
         task = Task.objects.get(pk=1)
 
         response1 = self.client.get(
-            reverse('task_update', kwargs={'pk': task.pk})
+            reverse("task_update", kwargs={"pk": task.pk})
         )
 
         self.assertEqual(response1.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response1, reverse('login'))
+        self.assertRedirects(response1, reverse("login"))
 
         self.client.force_login(user)
 
         response2 = self.client.get(
-            reverse('task_update', kwargs={'pk': task.pk})
+            reverse("task_update", kwargs={"pk": task.pk})
         )
 
         self.assertEqual(response2.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(response2, 'form.html')
+        self.assertTemplateUsed(response2, "form.html")
 
 
 class TestTaskDeleteView(TestCase):
-    fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
+    fixtures = ["users.json", "labels.json", "statuses.json", "tasks.json"]
 
     def test_task_view_delete_own(self) -> None:
         user = User.objects.get(pk=1)
@@ -102,10 +100,10 @@ class TestTaskDeleteView(TestCase):
         self.client.force_login(user)
 
         response = self.client.get(
-            reverse('task_delete', kwargs={'pk': task.pk})
+            reverse("task_delete", kwargs={"pk": task.pk})
         )
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(response, 'tasks/delete.html')
+        self.assertTemplateUsed(response, "tasks/delete.html")
 
     def test_task_view_delete_other(self) -> None:
         user = User.objects.get(pk=1)
@@ -114,14 +112,14 @@ class TestTaskDeleteView(TestCase):
         self.client.force_login(user)
 
         response = self.client.get(
-            reverse('task_delete', kwargs={'pk': task.pk})
+            reverse("task_delete", kwargs={"pk": task.pk})
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('task_index'))
+        self.assertRedirects(response, reverse("task_index"))
 
 
 class TestTaskDetailView(TestCase):
-    fixtures = ['users.json', 'labels.json', 'statuses.json', 'tasks.json']
+    fixtures = ["users.json", "labels.json", "statuses.json", "tasks.json"]
 
     def test_task_detail_view_access(self) -> None:
         user = User.objects.get(pk=1)
@@ -130,10 +128,10 @@ class TestTaskDetailView(TestCase):
         self.client.force_login(user)
 
         response = self.client.get(
-            reverse('task_details', kwargs={'pk': task.pk})
+            reverse("task_details", kwargs={"pk": task.pk})
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(response, 'tasks/details.html')
+        self.assertTemplateUsed(response, "tasks/details.html")
         self.assertContains(response, task.name)
         self.assertContains(response, task.description)

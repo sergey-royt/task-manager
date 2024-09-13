@@ -13,19 +13,16 @@ class CustomUser(AbstractUser):
     (can be set up using env variables specified in users/settings.py)
     Has an overwritten __str__ method returning full name"""
 
-    first_name = models.CharField(
-        _("first name"), max_length=NAME_MAX_LENGTH
-    )
-    last_name = models.CharField(
-        _("last name"), max_length=NAME_MAX_LENGTH
-    )
+    first_name = models.CharField(_("first name"), max_length=NAME_MAX_LENGTH)
+    last_name = models.CharField(_("last name"), max_length=NAME_MAX_LENGTH)
     password = models.CharField(
         _("password"),
         max_length=128,
-        validators=[MinLengthValidator(MIN_PASSWORD_LENGTH)])
+        validators=[MinLengthValidator(MIN_PASSWORD_LENGTH)],
+    )
 
     class Meta(AbstractUser.Meta):
-        db_table = 'auth_user'
+        db_table = "auth_user"
 
     def __str__(self) -> str:
         """

@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 class TestTaskInstanceCreate(TestCase):
-    fixtures = ['users.json', 'statuses.json']
+    fixtures = ["users.json", "statuses.json"]
 
     def test_create_instance(self):
         self.assertQuerySetEqual(Task.objects.all(), [])
@@ -22,21 +22,21 @@ class TestTaskInstanceCreate(TestCase):
         credentials = {
             "name": "Update Company Website",
             "description": "Update the homepage of the website "
-                           "by adding new photos and information "
-                           "about the latest products. "
-                           "Ensure that all links are working correctly.",
+            "by adding new photos and information "
+            "about the latest products. "
+            "Ensure that all links are working correctly.",
             "status": 1,
-            "executor": 1
+            "executor": 1,
         }
 
         task = Task.objects.create(
-            name=credentials['name'],
-            description=credentials['description'],
+            name=credentials["name"],
+            description=credentials["description"],
             author=user,
-            status=status
+            status=status,
         )
 
         self.assertEqual(Task.objects.count(), count + 1)
-        self.assertEqual(task.name, credentials['name'])
-        self.assertEqual(task.description, credentials['description'])
+        self.assertEqual(task.name, credentials["name"])
+        self.assertEqual(task.description, credentials["description"])
         self.assertEqual(task.author, user)

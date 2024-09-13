@@ -12,9 +12,9 @@ class LabelIndexView(AuthRequiredMixin, ListView):
     """Render list of Labels ordered by pk"""
 
     model = Label
-    template_name = 'labels/index.html'
-    context_object_name = 'labels'
-    ordering = ['pk']
+    template_name = "labels/index.html"
+    context_object_name = "labels"
+    ordering = ["pk"]
 
 
 class LabelCreateView(SuccessMessageMixin, AuthRequiredMixin, CreateView):
@@ -22,11 +22,10 @@ class LabelCreateView(SuccessMessageMixin, AuthRequiredMixin, CreateView):
     and authentication check"""
 
     form_class = LabelForm
-    template_name = 'form.html'
-    success_message = _('The label has been successfully created')
-    success_url = reverse_lazy('labels_index')
-    extra_context = {'title': _('Create label'),
-                     'button_text': _('Create')}
+    template_name = "form.html"
+    success_message = _("The label has been successfully created")
+    success_url = reverse_lazy("labels_index")
+    extra_context = {"title": _("Create label"), "button_text": _("Create")}
 
 
 class LabelUpdateView(SuccessMessageMixin, AuthRequiredMixin, UpdateView):
@@ -35,27 +34,27 @@ class LabelUpdateView(SuccessMessageMixin, AuthRequiredMixin, UpdateView):
 
     model = Label
     form_class = LabelForm
-    template_name = 'form.html'
-    success_message = _('The label has been successfully updated')
-    success_url = reverse_lazy('labels_index')
-    extra_context = {'title': _('Updating label'),
-                     'button_text': _('Update')}
+    template_name = "form.html"
+    success_message = _("The label has been successfully updated")
+    success_url = reverse_lazy("labels_index")
+    extra_context = {"title": _("Updating label"), "button_text": _("Update")}
 
 
-class LabelDeleteView(AuthRequiredMixin,
-                      ProtectedDeleteView):
+class LabelDeleteView(AuthRequiredMixin, ProtectedDeleteView):
     """
     Label object delete view with delete protection
     if user have tasks. Has a authentication check and
     result messages
     """
 
-    success_message = _('The label has been successfully deleted')
-    success_url = reverse_lazy('labels_index')
-    template_name = 'labels/delete.html'
+    success_message = _("The label has been successfully deleted")
+    success_url = reverse_lazy("labels_index")
+    template_name = "labels/delete.html"
     model = Label
-    extra_context = {'title': _('Deleting label'),
-                     'text': _('Are you sure you want to delete'),
-                     'button_text': _('Yes, delete')}
-    protected_url = reverse_lazy('labels_index')
-    protected_message = _('Cannot delete label because it in use')
+    extra_context = {
+        "title": _("Deleting label"),
+        "text": _("Are you sure you want to delete"),
+        "button_text": _("Yes, delete"),
+    }
+    protected_url = reverse_lazy("labels_index")
+    protected_message = _("Cannot delete label because it in use")

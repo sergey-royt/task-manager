@@ -16,16 +16,14 @@ class TestCreateStatus(TestCase):
     def test_create_not_authenticated(self) -> None:
         self.assertQuerySetEqual(Status.objects.all(), [])
 
-        valid_status = {
-            "name": "Paused"
-        }
+        valid_status = {"name": "Paused"}
 
         response = self.client.post(
-            reverse('status_create'), data=valid_status
+            reverse("status_create"), data=valid_status
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(response, reverse("login"))
         self.assertQuerySetEqual(Status.objects.all(), [])
 
     def test_create_authenticated(self) -> None:
@@ -34,76 +32,64 @@ class TestCreateStatus(TestCase):
         count = Status.objects.count()
 
         user = User.objects.create_user(
-            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+            {"username": "username", "password": "G00d_pa$$w0rd"}
         )
 
-        valid_status = {
-            "name": "Paused"
-        }
+        valid_status = {"name": "Paused"}
 
         self.client.force_login(user)
 
         response = self.client.post(
-            reverse('status_create'), data=valid_status
+            reverse("status_create"), data=valid_status
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('status_index'))
+        self.assertRedirects(response, reverse("status_index"))
         self.assertEqual(Status.objects.count(), count + 1)
         self.assertQuerySetEqual(
-            Status.objects.last().name, valid_status['name']
+            Status.objects.last().name, valid_status["name"]
         )
 
     def test_create_empty(self) -> None:
         self.assertQuerySetEqual(Status.objects.all(), [])
 
         user = User.objects.create_user(
-            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+            {"username": "username", "password": "G00d_pa$$w0rd"}
         )
 
-        empty_status = {
-            "name": ""
-        }
+        empty_status = {"name": ""}
 
         self.client.force_login(user)
         response = self.client.post(
-            reverse('status_create'), data=empty_status
+            reverse("status_create"), data=empty_status
         )
 
-        errors = response.context['form'].errors
-        error_help = _('This field is required.')
+        errors = response.context["form"].errors
+        error_help = _("This field is required.")
 
-        self.assertIn('name', errors)
-        self.assertEqual(
-            [error_help],
-            errors['name']
-        )
+        self.assertIn("name", errors)
+        self.assertEqual([error_help], errors["name"])
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertQuerySetEqual(Status.objects.all(), [])
 
     def test_create_exists(self) -> None:
         user = User.objects.create_user(
-            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+            {"username": "username", "password": "G00d_pa$$w0rd"}
         )
 
-        status_data = {
-            "name": "New"
-        }
+        status_data = {"name": "New"}
         Status.objects.create(**status_data)
         count = Status.objects.count()
 
         self.client.force_login(user)
-        response = self.client.post(
-            reverse('status_create'), data=status_data
-        )
+        response = self.client.post(reverse("status_create"), data=status_data)
 
-        errors = response.context['form'].errors
+        errors = response.context["form"].errors
 
-        self.assertIn('name', errors)
+        self.assertIn("name", errors)
         self.assertEqual(
-            [_('Status with this Name already exists.')],
-            errors['name']
+            [_("Status with this Name already exists.")], errors["name"]
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -113,59 +99,52 @@ class TestCreateStatus(TestCase):
 class TestUpdateStatus(TestCase):
 
     def test_update_not_authenticated(self) -> None:
-        status_data = {
-            "name": "New"
-        }
-        status = Status.objects.create(name='Archived')
+        status_data = {"name": "New"}
+        status = Status.objects.create(name="Archived")
 
         response = self.client.post(
-            reverse(
-                'status_update', kwargs={'pk': status.pk}
-            ), data=status_data
+            reverse("status_update", kwargs={"pk": status.pk}),
+            data=status_data,
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(response, reverse("login"))
         self.assertNotEqual(
-            Status.objects.get(pk=status.pk).name, status_data['name']
+            Status.objects.get(pk=status.pk).name, status_data["name"]
         )
 
     def test_update(self) -> None:
         user = User.objects.create_user(
-            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+            {"username": "username", "password": "G00d_pa$$w0rd"}
         )
-        status_data = {
-            "name": "New"
-        }
-        status = Status.objects.create(name='Bug')
+        status_data = {"name": "New"}
+        status = Status.objects.create(name="Bug")
         count = Status.objects.count()
 
         self.client.force_login(user)
         response = self.client.post(
-            reverse(
-                'status_update', kwargs={'pk': status.pk}), data=status_data
+            reverse("status_update", kwargs={"pk": status.pk}),
+            data=status_data,
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('status_index'))
+        self.assertRedirects(response, reverse("status_index"))
         self.assertEqual(Status.objects.count(), count)
         self.assertQuerySetEqual(
-            Status.objects.get(pk=status.pk).name, status_data['name']
+            Status.objects.get(pk=status.pk).name, status_data["name"]
         )
 
 
 class TestDeleteStatus(TestCase):
-    fixtures = ['users.json', 'statuses.json', 'tasks.json', 'labels.json']
+    fixtures = ["users.json", "statuses.json", "tasks.json", "labels.json"]
 
     def test_delete_status_not_authenticated(self) -> None:
         count = Status.objects.count()
 
-        response = self.client.post(
-            reverse('status_delete', kwargs={'pk': 3})
-        )
+        response = self.client.post(reverse("status_delete", kwargs={"pk": 3}))
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(response, reverse("login"))
         self.assertEqual(Status.objects.count(), count)
 
     def test_delete_status(self) -> None:
@@ -173,12 +152,10 @@ class TestDeleteStatus(TestCase):
         count = Status.objects.count()
 
         self.client.force_login(user)
-        response = self.client.post(
-            reverse('status_delete', kwargs={'pk': 3})
-        )
+        response = self.client.post(reverse("status_delete", kwargs={"pk": 3}))
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('status_index'))
+        self.assertRedirects(response, reverse("status_index"))
         self.assertEqual(Status.objects.count(), count - 1)
         with self.assertRaises(ObjectDoesNotExist):
             Status.objects.get(id=3)
@@ -188,15 +165,13 @@ class TestDeleteStatus(TestCase):
         count = Status.objects.count()
 
         self.client.force_login(user)
-        response = self.client.post(
-            reverse('status_delete', kwargs={'pk': 1})
-        )
+        response = self.client.post(reverse("status_delete", kwargs={"pk": 1}))
 
         messages = list(get_messages(response.wsgi_request))
 
         self.assertEqual(
-            str(messages[0]), _('Cannot delete status because it in use')
+            str(messages[0]), _("Cannot delete status because it in use")
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('status_index'))
+        self.assertRedirects(response, reverse("status_index"))
         self.assertEqual(Status.objects.count(), count)

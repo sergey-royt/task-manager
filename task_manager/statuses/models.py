@@ -7,13 +7,11 @@ class Status(models.Model):
     :name: CharField,
     :created_at: DateTimeField"""
 
-    name = models.CharField(max_length=150,
-                            unique=True,
-                            blank=False,
-                            verbose_name=_('Name'))
+    name = models.CharField(
+        max_length=150, unique=True, blank=False, verbose_name=_("Name")
+    )
     created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name=_('Date of creation')
+        auto_now_add=True, verbose_name=_("Date of creation")
     )
 
     def __str__(self) -> models.CharField:
@@ -22,5 +20,5 @@ class Status(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _('Status')
-        verbose_name_plural = _('Statuses')
+        verbose_name = _("Status")
+        verbose_name_plural = _("Statuses")

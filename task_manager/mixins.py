@@ -15,11 +15,11 @@ class AuthRequiredMixin(LoginRequiredMixin):
     auth_message = _("You aren't authorised! Please log in.")
 
     def dispatch(
-            self, request: HttpRequest, *args, **kwargs
+        self, request: HttpRequest, *args, **kwargs
     ) -> HttpResponseRedirect:
         if request.user.is_anonymous:
             messages.error(request, self.auth_message)
-            return redirect(reverse_lazy('login'))
+            return redirect(reverse_lazy("login"))
         return super().dispatch(request, *args, **kwargs)
 
 

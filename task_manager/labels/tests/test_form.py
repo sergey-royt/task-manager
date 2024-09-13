@@ -20,7 +20,7 @@ class TestLabelForm(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_label_form_exists(self) -> None:
-        Label.objects.create(name='bug')
+        Label.objects.create(name="bug")
 
         data = {"name": "bug"}
         form = LabelForm(data=data)

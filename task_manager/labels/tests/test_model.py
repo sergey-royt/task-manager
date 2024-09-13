@@ -8,10 +8,8 @@ class TestLabelModel(TestCase):
         self.assertQuerySetEqual(Label.objects.all(), [])
         count = Label.objects.count()
 
-        test_label = {
-            "name": "enhancement"
-        }
+        test_label = {"name": "enhancement"}
         label = Label.objects.create(**test_label)
 
         self.assertEqual(Label.objects.count(), count + 1)
-        self.assertEqual(label.name, test_label['name'])
+        self.assertEqual(label.name, test_label["name"])

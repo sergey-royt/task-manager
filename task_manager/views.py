@@ -4,7 +4,7 @@ from django.db.models import ProtectedError
 from django.http import (
     HttpResponseRedirect,
     HttpRequest,
-    HttpResponseNotAllowed
+    HttpResponseNotAllowed,
 )
 from django.shortcuts import redirect
 from django.views.generic import DeleteView
@@ -20,35 +20,36 @@ from django.contrib import messages
 class IndexView(TemplateView):
     """Main page view"""
 
-    template_name = 'index.html'
-    extra_context = {'title': _('Greetings from Hexlet!'),
-                     'text': _('Practical programming courses'),
-                     'button_text': _('Learn more')}
+    template_name = "index.html"
+    extra_context = {
+        "title": _("Greetings from Hexlet!"),
+        "text": _("Practical programming courses"),
+        "button_text": _("Learn more"),
+    }
 
 
 class UserLoginView(SuccessMessageMixin, LoginView):
     """Log in view with success message"""
 
-    template_name = 'form.html'
+    template_name = "form.html"
     authentication_form = AuthenticationForm
-    next_page = reverse_lazy('index')
-    extra_context = {'title': _('Authorization'),
-                     'button_text': _('Login')}
+    next_page = reverse_lazy("index")
+    extra_context = {"title": _("Authorization"), "button_text": _("Login")}
 
-    success_message = _('You are Logged in')
+    success_message = _("You are Logged in")
 
 
 class UserLogoutView(LogoutView):
     """Log out view"""
 
-    next_page = reverse_lazy('index')
+    next_page = reverse_lazy("index")
 
     def dispatch(
-            self, request: HttpRequest, *args, **kwargs
+        self, request: HttpRequest, *args, **kwargs
     ) -> Coroutine[Any, Any, HttpResponseNotAllowed] | HttpResponseNotAllowed:
         """add 'You are log out' message to response"""
 
-        messages.add_message(request, messages.INFO, _('You are logged out'))
+        messages.add_message(request, messages.INFO, _("You are logged out"))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -59,7 +60,7 @@ class ProtectedDeleteView(SuccessMessageMixin, DeleteView):
     protected_url: str | None = None
 
     def delete(
-            self, request: HttpRequest, *args, **kwargs
+        self, request: HttpRequest, *args, **kwargs
     ) -> HttpResponseRedirect:
         """Delete object and redirect to success url"""
 
@@ -70,7 +71,7 @@ class ProtectedDeleteView(SuccessMessageMixin, DeleteView):
         return HttpResponseRedirect(success_url)
 
     def post(
-            self, request: HttpRequest, *args, **kwargs
+        self, request: HttpRequest, *args, **kwargs
     ) -> HttpResponseRedirect:
         """try to delete object using delete in case ProtectedError raises
         redirect to protected url with flash message"""
