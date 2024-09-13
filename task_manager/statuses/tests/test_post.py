@@ -116,7 +116,7 @@ class TestUpdateStatus(TestCase):
         status_data = {
             "name": "New"
         }
-        status = Status.objects.create(name='Bug')
+        status = Status.objects.create(name='Archived')
 
         response = self.client.post(
             reverse(

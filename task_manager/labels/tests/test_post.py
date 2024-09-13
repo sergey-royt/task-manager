@@ -2,61 +2,69 @@ from django.contrib.messages import get_messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from django.test import TestCase
+from django.contrib.auth import get_user_model
 
 from http import HTTPStatus
 
-from .testcase import LabelTestCase
 from task_manager.labels.models import Label
 
 
-class TestLabelCreate(LabelTestCase):
-    """"""
+User = get_user_model()
+
+
+class TestLabelCreate(TestCase):
 
     def test_create_not_authenticated(self) -> None:
-        """
-        Test create Label not authenticated
-        Check status code, redirect to login page
-        Assert Label count not changed
-        """
+        self.assertQuerySetEqual(Label.objects.all(), [])
 
-        valid_label = self.test_labels['create']['valid'].copy()
-        self.client.logout()
+        valid_label = {
+            "name": "enhancement"
+        }
+
         response = self.client.post(
             reverse('labels_create'), data=valid_label
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('login'))
-        self.assertEqual(Label.objects.count(), self.count)
+        self.assertQuerySetEqual(Label.objects.all(), [])
 
     def test_create_authenticated(self) -> None:
-        """
-        Test create Label with valid credentials
-        Check status code, redirect to labels index page,
-        increase Label object count by one
-        and Label name accuracy
-        """
+        self.assertQuerySetEqual(Label.objects.all(), [])
 
-        valid_label = self.test_labels['create']['valid'].copy()
+        count = Label.objects.count()
+
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
+
+        valid_label = {
+            "name": "enhancement"
+        }
+
+        self.client.force_login(user)
         response = self.client.post(
             reverse('labels_create'), data=valid_label
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('labels_index'))
-        self.assertEqual(Label.objects.count(), self.count + 1)
+        self.assertEqual(Label.objects.count(), count + 1)
         self.assertQuerySetEqual(
             Label.objects.last().name, valid_label['name']
         )
 
     def test_create_empty(self) -> None:
-        """
-        Test Label create with empty required field (name)
-        Assert name field in errors, error message 'field required',
-        Check status code, Label count not changed.
-        """
+        self.assertQuerySetEqual(Label.objects.all(), [])
 
-        empty_label = self.test_labels['create']['missing_field'].copy()
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
+
+        empty_label = {"name": ""}
+
+        self.client.force_login(user)
         response = self.client.post(
             reverse('labels_create'), data=empty_label
         )
@@ -71,16 +79,19 @@ class TestLabelCreate(LabelTestCase):
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(Label.objects.count(), self.count)
+        self.assertQuerySetEqual(Label.objects.all(), [])
 
     def test_create_exists(self) -> None:
-        """
-        Test create Label with existed name.
-        Assert name field in errors, error message 'name already exists',
-        Check status code, Label count not changed.
-        """
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
 
-        existing_label = self.test_labels['create']['exists'].copy()
+        existing_label = {"name": "bug"}
+
+        Label.objects.create(**existing_label)
+        count = Label.objects.count()
+
+        self.client.force_login(user)
         response = self.client.post(
             reverse('labels_create'), data=existing_label
         )
@@ -93,61 +104,54 @@ class TestLabelCreate(LabelTestCase):
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(Label.objects.count(), self.count)
+        self.assertEqual(Label.objects.count(), count)
 
 
-class TestLabelUpdate(LabelTestCase):
-    """Test label update"""
+class TestLabelUpdate(TestCase):
 
     def test_update_not_authenticated(self) -> None:
-        """
-        Test Label update not authenticated
-        Check status code, redirect to login page,
-        assert Label object name hasn't been changed
-        """
+        label = Label.objects.create(name="bug")
 
-        update_label = self.test_labels['update'].copy()
-        self.client.logout()
+        update_label = {"name": "help wanted"}
+
         response = self.client.post(
-            reverse('labels_update', kwargs={'pk': 1}), data=update_label
+            reverse(
+                'labels_update', kwargs={'pk': label.pk}), data=update_label
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('login'))
-        self.assertNotEqual(Label.objects.get(pk=1).name, update_label)
+        self.assertNotEqual(Label.objects.get(pk=label.pk).name, update_label)
 
     def test_update(self) -> None:
-        """
-        Test Label object update authenticated
-        Check status code, redirect ro status index page,
-        Assert Label objects count not changed,
-        Assert Label object name has been changed
-        """
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
 
-        update_label = self.test_labels['update'].copy()
+        update_label = {"name": "help wanted"}
+
+        label = Label.objects.create(name="bug")
+        count = Label.objects.count()
+
+        self.client.force_login(user)
         response = self.client.post(
-            reverse('labels_update', kwargs={'pk': 1}), data=update_label
+            reverse(
+                'labels_update', kwargs={'pk': label.pk}), data=update_label
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('labels_index'))
-        self.assertEqual(Label.objects.count(), self.count)
+        self.assertEqual(Label.objects.count(), count)
         self.assertQuerySetEqual(
-            Label.objects.get(pk=1).name, update_label['name']
+            Label.objects.get(pk=label.pk).name, update_label['name']
         )
 
 
-class TestLabelDelete(LabelTestCase):
-    """Test Label delete"""
+class TestLabelDelete(TestCase):
+    fixtures = ['users.json', 'statuses.json', 'tasks.json', 'labels.json']
 
     def test_delete_label_not_authenticated(self) -> None:
-        """
-        Test Label delete not authenticated
-        Check status code, redirect to log in page,
-        Label object count not changed
-        """
-
-        self.client.logout()
+        count = Label.objects.count()
 
         response = self.client.post(
             reverse('labels_delete', kwargs={'pk': 3})
@@ -155,31 +159,28 @@ class TestLabelDelete(LabelTestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('login'))
-        self.assertEqual(Label.objects.count(), self.count)
+        self.assertEqual(Label.objects.count(), count)
 
     def test_delete_label(self) -> None:
-        """
-        Test delete Label
-        Check status code, redirect to status index page,
-        Label object count reduce by one,
-        Label object does not exist.
-        """
+        user = User.objects.get(pk=1)
+        count = Label.objects.count()
 
+        self.client.force_login(user)
         response = self.client.post(
             reverse('labels_delete', kwargs={'pk': 3})
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('labels_index'))
-        self.assertEqual(Label.objects.count(), self.count - 1)
+        self.assertEqual(Label.objects.count(), count - 1)
         with self.assertRaises(ObjectDoesNotExist):
             Label.objects.get(id=3)
 
     def test_delete_bound_label(self) -> None:
-        """
-        Test delete Label bound to task
-        check for message, status_code, redirect, Label count not changed
-        """
+        user = User.objects.get(pk=1)
+        count = Label.objects.count()
+
+        self.client.force_login(user)
 
         response = self.client.post(
             reverse('labels_delete', kwargs={'pk': 1})
@@ -192,4 +193,4 @@ class TestLabelDelete(LabelTestCase):
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('labels_index'))
-        self.assertEqual(Label.objects.count(), self.count)
+        self.assertEqual(Label.objects.count(), count)

@@ -1,35 +1,28 @@
-from .testcase import LabelTestCase
 from task_manager.labels.forms import LabelForm
+from task_manager.labels.models import Label
+
+from django.test import TestCase
 
 
-class TestLabelForm(LabelTestCase):
-    """Test Label form"""
+class TestLabelForm(TestCase):
     def test_label_form_valid(self) -> None:
-        """
-        Assert form with valid credentials is valid
-        """
 
-        data = self.test_labels['create']['valid'].copy()
+        data = {"name": "enhancement"}
         form = LabelForm(data=data)
 
         self.assertTrue(form.is_valid())
 
     def test_label_form_missing_field(self) -> None:
-        """
-        Assert form with missing field is not valid
-        """
 
-        data = self.test_labels['create']['missing_field'].copy()
+        data = {"name": ""}
         form = LabelForm(data=data)
 
         self.assertFalse(form.is_valid())
 
     def test_label_form_exists(self) -> None:
-        """
-        Assert form with existed name is not valid
-        """
+        Label.objects.create(name='bug')
 
-        data = self.test_labels['create']['exists'].copy()
+        data = {"name": "bug"}
         form = LabelForm(data=data)
 
         self.assertFalse(form.is_valid())
