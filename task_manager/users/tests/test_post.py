@@ -1,6 +1,5 @@
 from django.contrib.messages import get_messages
-
-from .testcase import UserTestCase
+from django.test import TestCase
 from django.shortcuts import reverse
 from http import HTTPStatus
 from django.utils.translation import gettext_lazy as _
@@ -11,29 +10,40 @@ from django.core.exceptions import ObjectDoesNotExist
 User = get_user_model()
 
 
-class TestUserCreate(UserTestCase):
-    """Test user create"""
+class TestUserCreate(TestCase):
 
     def test_user_create_valid(self) -> None:
-        """test user create with proper credentials
-        test status_code, redirect, user count increases by one,
-        last user is created"""
+        self.assertQuerySetEqual(User.objects.all(), [])
+        count = User.objects.count()
 
-        credentials = self.test_user['create']['valid'].copy()
+        credentials = {
+            "first_name": "Malika",
+            "last_name": "Hodkiewicz",
+            "username": "malika-hodkiewicz",
+            "password1": "8RvGr5wWTu",
+            "password2": "8RvGr5wWTu"
+        }
+
         response = self.client.post(reverse('users_create'), data=credentials)
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('login'))
-        self.assertEqual(User.objects.count(), self.count + 1)
+        self.assertEqual(User.objects.count(), count + 1)
         self.assertEqual(User.objects.last().username, credentials['username'])
 
     def test_user_create_missing_field(self) -> None:
-        """test user create with missing field username
-        check username error in response, status_code,
-        user count not changed"""
+        self.assertQuerySetEqual(User.objects.all(), [])
+        count = User.objects.count()
 
-        credentials = self.test_user['create']['missing_field'].copy()
+        credentials = {
+            "first_name": "John",
+            "last_name": "Doe",
+            "password1": "S3cur3P@ssw0rd!",
+            "password2": "S3cur3P@ssw0rd!"
+        }
+
         response = self.client.post(reverse('users_create'), data=credentials)
+
         errors = response.context['form'].errors
         error_help = _('This field is required.')
 
@@ -43,15 +53,26 @@ class TestUserCreate(UserTestCase):
             errors['username']
         )
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(User.objects.count(), self.count)
+        self.assertEqual(User.objects.count(), count)
 
     def test_user_create_username_exists(self) -> None:
-        """test create user with existing username
-        check username error in response, status_code,
-        user count not changed"""
+        credentials = {
+            "username": "alice_johnson",
+            "first_name": "Alice",
+            "last_name": "Johnson",
+            "password1": "A!c3J0hn$on2024",
+            "password2": "A!c3J0hn$on2024"
+        }
+        user = User.objects.create_user(
+            username=credentials['username'],
+            password=credentials['password1']
+        )
 
-        credentials = self.test_user['create']['exists'].copy()
+        self.assertQuerySetEqual(User.objects.all(), [user])
+        count = User.objects.count()
+
         response = self.client.post(reverse('users_create'), data=credentials)
+
         errors = response.context['form'].errors
         error_help = _('A user with that username already exists.')
 
@@ -62,85 +83,118 @@ class TestUserCreate(UserTestCase):
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(User.objects.count(), self.count)
+        self.assertEqual(User.objects.count(), count)
 
 
-class TestUserUpdate(UserTestCase):
-    """Test user update"""
+class TestUserUpdate(TestCase):
 
     def test_user_update_self(self) -> None:
-        """Test user update self with proper credentials
-        check status_code, redirect, user count not changed,
-        user data has been changed"""
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
 
-        credentials = self.test_user['update'].copy()
+        credentials = {
+            "username": "michael789",
+            "first_name": "Michael",
+            "last_name": "Smith",
+            "password1": "Str0ng!Passw0rd",
+            "password2": "Str0ng!Passw0rd"
+        }
+
+        count = User.objects.count()
+
+        self.client.force_login(user)
+
         response = self.client.post(
-            reverse('users_update', kwargs={'pk': 1}), data=credentials
+            reverse('users_update', kwargs={'pk': user.pk}), data=credentials
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('users_index'))
-        self.assertEqual(User.objects.count(), self.count)
+        self.assertEqual(User.objects.count(), count)
         self.assertEqual(
-            User.objects.get(id=1).first_name,
+            User.objects.get(pk=user.pk).first_name,
             credentials['first_name']
         )
 
     def test_user_update_other(self) -> None:
-        """Test user update other user
-        Check status_code, redirect, user count not changed,
-        user data hasn't been changed"""
+        user1 = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
+        user2 = User.objects.create_user(
+            {'username': 'test', 'password': '$ecurE_paSSw0rD'}
+        )
+        credentials = {
+            "username": "michael789",
+            "first_name": "Michael",
+            "last_name": "Smith",
+            "password1": "Str0ng!Passw0rd",
+            "password2": "Str0ng!Passw0rd"
+        }
+        count = User.objects.count()
 
-        credentials = self.test_user['update'].copy()
+        self.client.force_login(user1)
+
         response = self.client.post(
-            reverse('users_update', kwargs={'pk': 2}), data=credentials
+            reverse('users_update', kwargs={'pk': user2.pk}), data=credentials
         )
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('users_index'))
-        self.assertEqual(User.objects.count(), self.count)
+        self.assertEqual(User.objects.count(), count)
         self.assertNotEqual(
-            User.objects.get(id=2).first_name,
+            User.objects.get(id=user2.pk).first_name,
             credentials['first_name']
         )
 
 
-class TestUserDelete(UserTestCase):
-    """Test user delete"""
+class TestUserDelete(TestCase):
+    fixtures = ['users.json', 'statuses.json', 'tasks.json', 'labels.json']
 
     def test_user_delete_self(self) -> None:
-        """Test user delete self
-        login as user not bounded to any task
-        check status_code, redirect, user count reduce by one,
-        user object doesn't exist"""
+        user = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
+        count = User.objects.count()
 
-        self.client.force_login(self.user3)
-        response = self.client.post(reverse('users_delete', kwargs={'pk': 3}))
-
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('users_index'))
-        self.assertEqual(User.objects.count(), self.count - 1)
-        with self.assertRaises(ObjectDoesNotExist):
-            User.objects.get(pk=3)
-
-    def test_user_delete_other(self) -> None:
-        """Test user delete other
-        check status_code, redirect, user count not changed"""
-
-        response = self.client.post(reverse('users_delete', kwargs={'pk': 2}))
-
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('users_index'))
-        self.assertEqual(User.objects.count(), self.count)
-
-    def test_user_delete_bound(self) -> None:
-        """
-        Test delete user bound to task
-        check for message, status_code, redirect, user count not changed
-        """
+        self.client.force_login(user)
 
         response = self.client.post(
-            reverse('users_delete', kwargs={'pk': 1})
+            reverse('users_delete', kwargs={'pk': user.pk})
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('users_index'))
+        self.assertEqual(User.objects.count(), count - 1)
+        with self.assertRaises(ObjectDoesNotExist):
+            User.objects.get(pk=user.pk)
+
+    def test_user_delete_other(self) -> None:
+        user1 = User.objects.create_user(
+            {'username': 'username', 'password': 'G00d_pa$$w0rd'}
+        )
+        user2 = User.objects.create_user(
+            {'username': 'test', 'password': '$ecurE_paSSw0rD'}
+        )
+        count = User.objects.count()
+
+        self.client.force_login(user1)
+
+        response = self.client.post(
+            reverse('users_delete', kwargs={'pk': user2.pk})
+        )
+
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response, reverse('users_index'))
+        self.assertEqual(User.objects.count(), count)
+
+    def test_user_delete_bound(self) -> None:
+        count = User.objects.count()
+        user = User.objects.get(pk=1)
+
+        self.client.force_login(user)
+        response = self.client.post(
+            reverse('users_delete', kwargs={'pk': user.pk})
         )
 
         messages = list(get_messages(response.wsgi_request))
@@ -151,4 +205,4 @@ class TestUserDelete(UserTestCase):
         )
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse('users_index'))
-        self.assertEqual(User.objects.count(), self.count)
+        self.assertEqual(User.objects.count(), count)

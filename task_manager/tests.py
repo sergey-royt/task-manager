@@ -10,16 +10,13 @@ User = get_user_model()
 
 
 class LoginTest(TestCase):
-    """Test Case for log in view"""
 
     def test_login(self) -> None:
-        """test login on login page with existed user credentials"""
 
-        client = Client()
         user_data = {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         User.objects.create_user(**user_data)
 
-        response = client.post(
+        response = self.client.post(
             reverse('login'), data=user_data, follow=True
         )
 
@@ -28,15 +25,13 @@ class LoginTest(TestCase):
         self.assertTrue(response.context['user'].is_authenticated)
 
     def test_logout(self) -> None:
-        """test logout"""
 
-        client = Client()
         user = User.objects.create_user(
             {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
 
-        client.force_login(user)
-        response = client.post(reverse('logout'), follow=True)
+        self.client.force_login(user)
+        response = self.client.post(reverse('logout'), follow=True)
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertRedirects(response, reverse('index'))

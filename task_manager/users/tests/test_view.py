@@ -31,9 +31,8 @@ class TestUserListView(TestCase):
 class TestUserCreateView(TestCase):
 
     def test_view_access(self) -> None:
-        client = Client()
 
-        response = client.get(reverse('users_create'))
+        response = self.client.get(reverse('users_create'))
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'form.html')
@@ -45,9 +44,8 @@ class TestUserUpdateView(TestCase):
         user = User.objects.create_user(
             {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
-        client = Client()
 
-        response = client.get(
+        response = self.client.get(
             reverse('users_update', kwargs={'pk': user.pk})
         )
 
@@ -59,10 +57,9 @@ class TestUserUpdateView(TestCase):
             {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
 
-        client = Client()
-        client.force_login(user)
+        self.client.force_login(user)
 
-        response = client.get(
+        response = self.client.get(
             reverse('users_update', kwargs={'pk': user.pk})
         )
 
@@ -77,10 +74,9 @@ class TestUserUpdateView(TestCase):
             {'username': 'test', 'password': '$ecurE_paSSw0rD'}
         )
 
-        client = Client()
-        client.force_login(user1)
+        self.client.force_login(user1)
 
-        response = client.get(
+        response = self.client.get(
             reverse_lazy('users_update', kwargs={'pk': user2.pk})
         )
 
@@ -95,9 +91,7 @@ class TestUserDeleteView(TestCase):
             {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
 
-        client = Client()
-
-        response = client.get(
+        response = self.client.get(
             reverse('users_delete', kwargs={'pk': user.pk})
         )
 
@@ -109,10 +103,9 @@ class TestUserDeleteView(TestCase):
             {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
 
-        client = Client()
-        client.force_login(user)
+        self.client.force_login(user)
 
-        response = client.get(
+        response = self.client.get(
             reverse('users_delete', kwargs={'pk': user.pk})
         )
 
@@ -127,10 +120,9 @@ class TestUserDeleteView(TestCase):
             {'username': 'test', 'password': '$ecurE_paSSw0rD'}
         )
 
-        client = Client()
-        client.force_login(user1)
+        self.client.force_login(user1)
 
-        response = client.get(
+        response = self.client.get(
             reverse_lazy('users_delete', kwargs={'pk': user2.pk})
         )
 
