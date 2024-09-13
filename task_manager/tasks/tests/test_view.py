@@ -55,17 +55,17 @@ class TestTaskCreateView(TestCase):
             {'username': 'username', 'password': 'G00d_pa$$w0rd'}
         )
 
-        response = self.client.get(reverse('task_create'))
+        response1 = self.client.get(reverse('task_create'))
 
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('login'))
+        self.assertEqual(response1.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response1, reverse('login'))
 
         self.client.force_login(user)
 
-        response = self.client.get(reverse('task_create'))
+        response2 = self.client.get(reverse('task_create'))
 
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(response, 'form.html')
+        self.assertEqual(response2.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response2, 'form.html')
 
 
 class TestTaskUpdateView(TestCase):
@@ -75,21 +75,21 @@ class TestTaskUpdateView(TestCase):
         user = User.objects.get(pk=1)
         task = Task.objects.get(pk=1)
 
-        response = self.client.get(
+        response1 = self.client.get(
             reverse('task_update', kwargs={'pk': task.pk})
         )
 
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertRedirects(response, reverse('login'))
+        self.assertEqual(response1.status_code, HTTPStatus.FOUND)
+        self.assertRedirects(response1, reverse('login'))
 
         self.client.force_login(user)
 
-        response = self.client.get(
+        response2 = self.client.get(
             reverse('task_update', kwargs={'pk': task.pk})
         )
 
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertTemplateUsed(response, 'form.html')
+        self.assertEqual(response2.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response2, 'form.html')
 
 
 class TestTaskDeleteView(TestCase):
