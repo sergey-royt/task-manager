@@ -16,7 +16,7 @@ User = get_user_model()
 class TestLabelCreate(TestCase):
 
     def test_create_not_authenticated(self) -> None:
-        self.assertQuerySetEqual(Label.objects.all(), [])
+        self.assertEqual(Label.objects.count(), 0)
 
         valid_label = {"name": "enhancement"}
 
@@ -24,12 +24,10 @@ class TestLabelCreate(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("login"))
-        self.assertQuerySetEqual(Label.objects.all(), [])
+        self.assertEqual(Label.objects.count(), 0)
 
     def test_create_authenticated(self) -> None:
-        self.assertQuerySetEqual(Label.objects.all(), [])
-
-        count = Label.objects.count()
+        self.assertEqual(Label.objects.count(), 0)
 
         user = User.objects.create_user(
             {"username": "username", "password": "G00d_pa$$w0rd"}
@@ -42,13 +40,13 @@ class TestLabelCreate(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("labels_index"))
-        self.assertEqual(Label.objects.count(), count + 1)
+        self.assertEqual(Label.objects.count(), 1)
         self.assertQuerySetEqual(
             Label.objects.last().name, valid_label["name"]
         )
 
     def test_create_empty(self) -> None:
-        self.assertQuerySetEqual(Label.objects.all(), [])
+        self.assertEqual(Label.objects.count(), 0)
 
         user = User.objects.create_user(
             {"username": "username", "password": "G00d_pa$$w0rd"}
@@ -66,7 +64,7 @@ class TestLabelCreate(TestCase):
         self.assertEqual([error_help], errors["name"])
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertQuerySetEqual(Label.objects.all(), [])
+        self.assertEqual(Label.objects.count(), 0)
 
     def test_create_exists(self) -> None:
         user = User.objects.create_user(
@@ -74,9 +72,9 @@ class TestLabelCreate(TestCase):
         )
 
         existing_label = {"name": "bug"}
-
+        self.assertEqual(Label.objects.count(), 0)
         Label.objects.create(**existing_label)
-        count = Label.objects.count()
+        self.assertEqual(Label.objects.count(), 1)
 
         self.client.force_login(user)
         response = self.client.post(
@@ -90,7 +88,7 @@ class TestLabelCreate(TestCase):
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(Label.objects.count(), count)
+        self.assertEqual(Label.objects.count(), 1)
 
 
 class TestLabelUpdate(TestCase):
@@ -115,9 +113,9 @@ class TestLabelUpdate(TestCase):
         )
 
         update_label = {"name": "help wanted"}
-
+        self.assertEqual(Label.objects.count(), 0)
         label = Label.objects.create(name="bug")
-        count = Label.objects.count()
+        self.assertEqual(Label.objects.count(), 1)
 
         self.client.force_login(user)
         response = self.client.post(
@@ -127,7 +125,7 @@ class TestLabelUpdate(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("labels_index"))
-        self.assertEqual(Label.objects.count(), count)
+        self.assertEqual(Label.objects.count(), 1)
         self.assertQuerySetEqual(
             Label.objects.get(pk=label.pk).name, update_label["name"]
         )

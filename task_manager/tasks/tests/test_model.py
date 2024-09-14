@@ -12,9 +12,7 @@ class TestTaskInstanceCreate(TestCase):
     fixtures = ["users.json", "statuses.json"]
 
     def test_create_instance(self):
-        self.assertQuerySetEqual(Task.objects.all(), [])
-
-        count = Task.objects.count()
+        self.assertEqual(Task.objects.count(), 0)
 
         user = User.objects.get(pk=1)
         status = Status.objects.get(pk=1)
@@ -36,7 +34,7 @@ class TestTaskInstanceCreate(TestCase):
             status=status,
         )
 
-        self.assertEqual(Task.objects.count(), count + 1)
+        self.assertEqual(Task.objects.count(), 1)
         self.assertEqual(task.name, credentials["name"])
         self.assertEqual(task.description, credentials["description"])
         self.assertEqual(task.author, user)

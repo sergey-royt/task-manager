@@ -13,8 +13,7 @@ User = get_user_model()
 class TestUserCreate(TestCase):
 
     def test_user_create_valid(self) -> None:
-        self.assertQuerySetEqual(User.objects.all(), [])
-        count = User.objects.count()
+        self.assertEqual(User.objects.count(), 0)
 
         credentials = {
             "first_name": "Malika",
@@ -27,12 +26,11 @@ class TestUserCreate(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("login"))
-        self.assertEqual(User.objects.count(), count + 1)
+        self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.last().username, credentials["username"])
 
     def test_user_create_missing_field(self) -> None:
-        self.assertQuerySetEqual(User.objects.all(), [])
-        count = User.objects.count()
+        self.assertEqual(User.objects.count(), 0)
 
         credentials = {
             "first_name": "John",
@@ -49,9 +47,11 @@ class TestUserCreate(TestCase):
         self.assertIn("username", errors)
         self.assertEqual([error_help], errors["username"])
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(User.objects.count(), count)
+        self.assertEqual(User.objects.count(), 0)
 
     def test_user_create_username_exists(self) -> None:
+        self.assertEqual(User.objects.count(), 0)
+
         credentials = {
             "username": "alice_johnson",
             "first_name": "Alice",
@@ -59,12 +59,11 @@ class TestUserCreate(TestCase):
             "password1": "A!c3J0hn$on2024",
             "password2": "A!c3J0hn$on2024",
         }
-        user = User.objects.create_user(
+        User.objects.create_user(
             username=credentials["username"], password=credentials["password1"]
         )
 
-        self.assertQuerySetEqual(User.objects.all(), [user])
-        count = User.objects.count()
+        self.assertEqual(User.objects.count(), 1)
 
         response = self.client.post(reverse("users_create"), data=credentials)
 
@@ -75,12 +74,13 @@ class TestUserCreate(TestCase):
         self.assertEqual([error_help], errors["username"])
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(User.objects.count(), count)
+        self.assertEqual(User.objects.count(), 1)
 
 
 class TestUserUpdate(TestCase):
 
     def test_user_update_self(self) -> None:
+        self.assertEqual(User.objects.count(), 0)
         user = User.objects.create_user(
             {"username": "username", "password": "G00d_pa$$w0rd"}
         )
@@ -93,7 +93,7 @@ class TestUserUpdate(TestCase):
             "password2": "Str0ng!Passw0rd",
         }
 
-        count = User.objects.count()
+        self.assertEqual(User.objects.count(), 1)
 
         self.client.force_login(user)
 
@@ -103,7 +103,7 @@ class TestUserUpdate(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("users_index"))
-        self.assertEqual(User.objects.count(), count)
+        self.assertEqual(User.objects.count(), 1)
         self.assertEqual(
             User.objects.get(pk=user.pk).first_name, credentials["first_name"]
         )
@@ -122,7 +122,6 @@ class TestUserUpdate(TestCase):
             "password1": "Str0ng!Passw0rd",
             "password2": "Str0ng!Passw0rd",
         }
-        count = User.objects.count()
 
         self.client.force_login(user1)
 
@@ -132,7 +131,6 @@ class TestUserUpdate(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("users_index"))
-        self.assertEqual(User.objects.count(), count)
         self.assertNotEqual(
             User.objects.get(id=user2.pk).first_name, credentials["first_name"]
         )

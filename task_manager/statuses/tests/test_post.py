@@ -14,7 +14,7 @@ User = get_user_model()
 
 class TestCreateStatus(TestCase):
     def test_create_not_authenticated(self) -> None:
-        self.assertQuerySetEqual(Status.objects.all(), [])
+        self.assertEqual(Status.objects.count(), 0)
 
         valid_status = {"name": "Paused"}
 
@@ -24,12 +24,10 @@ class TestCreateStatus(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("login"))
-        self.assertQuerySetEqual(Status.objects.all(), [])
+        self.assertEqual(Status.objects.count(), 0)
 
     def test_create_authenticated(self) -> None:
-        self.assertQuerySetEqual(Status.objects.all(), [])
-
-        count = Status.objects.count()
+        self.assertEqual(Status.objects.count(), 0)
 
         user = User.objects.create_user(
             {"username": "username", "password": "G00d_pa$$w0rd"}
@@ -45,13 +43,13 @@ class TestCreateStatus(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("status_index"))
-        self.assertEqual(Status.objects.count(), count + 1)
+        self.assertEqual(Status.objects.count(), 1)
         self.assertQuerySetEqual(
             Status.objects.last().name, valid_status["name"]
         )
 
     def test_create_empty(self) -> None:
-        self.assertQuerySetEqual(Status.objects.all(), [])
+        self.assertEqual(Status.objects.count(), 0)
 
         user = User.objects.create_user(
             {"username": "username", "password": "G00d_pa$$w0rd"}
@@ -71,7 +69,7 @@ class TestCreateStatus(TestCase):
         self.assertEqual([error_help], errors["name"])
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertQuerySetEqual(Status.objects.all(), [])
+        self.assertEqual(Status.objects.count(), 0)
 
     def test_create_exists(self) -> None:
         user = User.objects.create_user(
@@ -79,8 +77,9 @@ class TestCreateStatus(TestCase):
         )
 
         status_data = {"name": "New"}
+        self.assertEqual(Status.objects.count(), 0)
         Status.objects.create(**status_data)
-        count = Status.objects.count()
+        self.assertEqual(Status.objects.count(), 1)
 
         self.client.force_login(user)
         response = self.client.post(reverse("status_create"), data=status_data)
@@ -93,7 +92,7 @@ class TestCreateStatus(TestCase):
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(Status.objects.count(), count)
+        self.assertEqual(Status.objects.count(), 1)
 
 
 class TestUpdateStatus(TestCase):
@@ -118,8 +117,9 @@ class TestUpdateStatus(TestCase):
             {"username": "username", "password": "G00d_pa$$w0rd"}
         )
         status_data = {"name": "New"}
+        self.assertEqual(Status.objects.count(), 0)
         status = Status.objects.create(name="Bug")
-        count = Status.objects.count()
+        self.assertEqual(Status.objects.count(), 1)
 
         self.client.force_login(user)
         response = self.client.post(
@@ -129,7 +129,7 @@ class TestUpdateStatus(TestCase):
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertRedirects(response, reverse("status_index"))
-        self.assertEqual(Status.objects.count(), count)
+        self.assertEqual(Status.objects.count(), 1)
         self.assertQuerySetEqual(
             Status.objects.get(pk=status.pk).name, status_data["name"]
         )
