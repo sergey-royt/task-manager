@@ -36,10 +36,8 @@ ALLOWED_HOSTS = [
     "localhost",
 ]
 
-
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+if os.getenv("ALLOWED_HOSTS"):
+    ALLOWED_HOSTS + (os.getenv("ALLOWED_HOSTS").split(" "))
 
 # Application definition
 
