@@ -79,7 +79,7 @@ The project uses the Poetry dependency manager. To install Poetry use its [offic
 
 #### PostgreSQL / SQLite
 
-There are two main options for using a database management system for this project: **PostgreSQL** and **SQLite**.
+There are ways for using a database management system for this project: **PostgreSQL** and **SQLite**.
 
 PostgreSQL is used as the main database management system. You have to install it first. It can be downloaded from [official website](https://www.postgresql.org/download/) or installed using Homebrew:
 ```shell
