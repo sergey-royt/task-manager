@@ -6,3 +6,5 @@ DATABASE_URL={your database url}
 ALLOWED_HOSTS=by default only localhost is available, you can add other hosts separated by space (0.0.0.0 127.0.0.1 etc...)
 DEBUG=False by default
 LANGUAGE=ru-ru by default
+ENVIRONMENT='' by default, you can specify 'production' value to add rollbar middleware in this case you should either specify ROLLBAR_TOKEN variable
+ROLLBAR_TOKEN='' by default
