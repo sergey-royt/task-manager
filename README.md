@@ -26,6 +26,9 @@ The frontend is rendered on the backend. This means that the page is built by th
 
 [PostgreSQL](https://www.postgresql.org/) is used as the object-relational database system.
 
+<h3>Demo</h3>
+<p>The demo version is available on <a href="https://task-manager-xrjv.onrender.com">render</a></p>
+
 ### Features
 
 * [x] Set tasks;
