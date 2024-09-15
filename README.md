@@ -10,7 +10,7 @@
 <p>
 
 <a href="#about">About</a> •
-<a href="#installation">Installation</a>
+<a href="#installation">Installation</a> •
 <a href="#usage">Usage</a>
 </p>
 
@@ -25,9 +25,6 @@ To provide users with a convenient, adaptive, modern interface, the project uses
 The frontend is rendered on the backend. This means that the page is built by the DjangoTemplates backend, which returns prepared HTML. And this HTML is rendered by the server.
 
 [PostgreSQL](https://www.postgresql.org/) is used as the object-relational database system.
-
-<h3>Demo</h3>
-<p>The demo version is available on <a href="https://task-manager-xrjv.onrender.com">render</a></p>
 
 ### Features
 
