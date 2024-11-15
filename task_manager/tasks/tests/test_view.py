@@ -3,8 +3,10 @@ from http import HTTPStatus
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+from task_manager.labels.tests.factories.label_factory import LabelFactory
 from task_manager.tasks.models import Task
-
+from task_manager.tasks.tests.factories.task_factory import TaskFactory
+from task_manager.users.tests.factories.user_factory import UserFactory
 
 User = get_user_model()
 
@@ -33,6 +35,18 @@ class TestTaskIndexView(TestCase):
         self.assertQuerysetEqual(
             response.context["tasks"], Task.objects.all(), ordered=False
         )
+
+    def test_7_db_queries_login(self) -> None:
+        user = UserFactory()
+        self.client.force_login(user)
+
+        for _ in range(20):
+            label = LabelFactory()
+            task = TaskFactory()
+            task.labels.set([label])
+
+        with self.assertNumQueries(7):
+            self.client.get(reverse("task_index"))
 
     def test_filter(self) -> None:
         user = User.objects.get(pk=1)
@@ -135,3 +149,12 @@ class TestTaskDetailView(TestCase):
         self.assertTemplateUsed(response, "tasks/details.html")
         self.assertContains(response, task.name)
         self.assertContains(response, task.description)
+
+    def test_4_db_queries(self) -> None:
+        user = UserFactory()
+        self.client.force_login(user)
+
+        task = TaskFactory()
+
+        with self.assertNumQueries(4):
+            self.client.get(reverse("task_details", kwargs={"pk": task.pk}))

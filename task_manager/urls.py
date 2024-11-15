@@ -22,6 +22,7 @@ from task_manager.views import IndexView, UserLoginView, UserLogoutView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("__debug__/", include("debug_toolbar.urls")),
     path("", IndexView.as_view(), name="index"),
     path("login/", UserLoginView.as_view(), name="login"),
     path("logout/", UserLogoutView.as_view(), name="logout"),

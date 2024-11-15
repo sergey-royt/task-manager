@@ -20,6 +20,10 @@ class TaskIndexView(AuthRequiredMixin, FilterView):
     """Render list of Task objects ordered by pk and filter form"""
 
     model = Task
+
+    queryset = Task.objects.all(
+    ).prefetch_related("labels").select_related("author", "executor", "status")
+
     filterset_class = TaskFilter
     template_name = "tasks/index.html"
     context_object_name = "tasks"
@@ -95,4 +99,5 @@ class TaskDetailView(AuthRequiredMixin, DetailView):
 
     template_name = "tasks/details.html"
     model = Task
+    queryset = Task.objects.all().select_related("author", "executor", "status")
     extra_context = {"title": _("Task details")}

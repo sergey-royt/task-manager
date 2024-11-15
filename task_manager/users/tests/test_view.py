@@ -1,9 +1,11 @@
+from http import HTTPStatus
+
 from django.shortcuts import reverse
 from django.urls import reverse_lazy
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from http import HTTPStatus
 
+from task_manager.users.tests.factories.user_factory import UserFactory
 
 User = get_user_model()
 
@@ -23,6 +25,20 @@ class TestUserListView(TestCase):
         self.assertQuerysetEqual(
             response.context["users"], users, ordered=False
         )
+
+    def test_1_db_queries_logout(self) -> None:
+        for _ in range(10):
+            UserFactory()
+
+        with self.assertNumQueries(1):
+            self.client.get(reverse("users_index"))
+
+    def test_3_db_queries_login(self) -> None:
+        user = UserFactory()
+        self.client.force_login(user)
+
+        with self.assertNumQueries(3):
+            self.client.get(reverse("users_index"))
 
 
 class TestUserCreateView(TestCase):
