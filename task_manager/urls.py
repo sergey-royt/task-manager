@@ -18,11 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from task_manager.views import IndexView, UserLoginView, UserLogoutView
+from settings import DEBUG
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("__debug__/", include("debug_toolbar.urls")),
     path("", IndexView.as_view(), name="index"),
     path("login/", UserLoginView.as_view(), name="login"),
     path("logout/", UserLogoutView.as_view(), name="logout"),
@@ -31,3 +31,6 @@ urlpatterns = [
     path("tasks/", include("task_manager.tasks.urls")),
     path("labels/", include("task_manager.labels.urls")),
 ]
+
+if DEBUG:
+    urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
