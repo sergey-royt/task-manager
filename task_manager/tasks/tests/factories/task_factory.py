@@ -8,7 +8,7 @@ class TaskFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "tasks.Task"
 
-    name = factory.Faker("name")
+    name = factory.Faker("name", unique=True)
     status = factory.SubFactory(StatusFactory)
     author = factory.SubFactory(UserFactory)
     executor = factory.SubFactory(UserFactory)

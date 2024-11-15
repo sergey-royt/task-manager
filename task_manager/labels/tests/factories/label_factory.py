@@ -5,4 +5,4 @@ class LabelFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = "labels.Label"
 
-    name = factory.Faker("word")
+    name = factory.Faker("word", unique=True)
