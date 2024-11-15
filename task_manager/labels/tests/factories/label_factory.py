@@ -3,6 +3,6 @@ import factory
 
 class LabelFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = 'labels.Label'
+        model = "labels.Label"
 
-    name= factory.Faker('word')
+    name = factory.Faker("word")

@@ -21,8 +21,11 @@ class TaskIndexView(AuthRequiredMixin, FilterView):
 
     model = Task
 
-    queryset = Task.objects.all(
-    ).prefetch_related("labels").select_related("author", "executor", "status")
+    queryset = (
+        Task.objects.all()
+        .prefetch_related("labels")
+        .select_related("author", "executor", "status")
+    )
 
     filterset_class = TaskFilter
     template_name = "tasks/index.html"
@@ -99,5 +102,7 @@ class TaskDetailView(AuthRequiredMixin, DetailView):
 
     template_name = "tasks/details.html"
     model = Task
-    queryset = Task.objects.all().select_related("author", "executor", "status")
+    queryset = Task.objects.all().select_related(
+        "author", "executor", "status"
+    )
     extra_context = {"title": _("Task details")}
